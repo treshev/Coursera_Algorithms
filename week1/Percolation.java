@@ -14,10 +14,6 @@ public class Percolation {
         globalN = n;
         mass = new boolean[n + 1][n + 1];
         uf = new WeightedQuickUnionUF(n * n + 2);
-//        for (int row = 1; row <= n; row++) {
-//            uf.union(0, row);
-//            uf.union(n * n + 1, n * n + 1 - row);
-//        }
     }
 
     private int getIndex(int row, int col) {
