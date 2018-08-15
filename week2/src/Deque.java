@@ -55,6 +55,11 @@ public class Deque<Item> implements Iterable<Item> {
         Node newNode = new Node();
         newNode.item = newItem;
         newNode.next = first;
+
+        if (first != null) {
+            first.previous = newNode;
+        }
+
         first = newNode;
 
         if (size == 0) {
@@ -90,7 +95,10 @@ public class Deque<Item> implements Iterable<Item> {
         if (size == 0) {
             last = null;
         }
-        return current.item;
+
+        Item item = current.item;
+        current = null;
+        return item;
     }
 
     public Item removeLast() {
@@ -100,58 +108,18 @@ public class Deque<Item> implements Iterable<Item> {
         if (last.previous != null) {
             last.previous.next = null;
         }
+        last = last.previous;
         size--;
         if (size == 0) {
             first = null;
             last = null;
         }
-        return current.item;
+        Item item = current.item;
+        current = null;
+        return item;
     }
 
     public Iterator<Item> iterator() {
         return new MyIterator();
-    }
-
-    public static void main(String[] args) {
-
-        System.out.println("From the head");
-        Deque<Integer> queue = new Deque<Integer>();
-        for (int i = 0; i < 10; i++) {
-            queue.addFirst(i);
-        }
-        System.out.println("Queue size before = " + queue.size());
-        for (int i = 0; i < 10; i++) {
-            queue.removeFirst();
-        }
-
-        System.out.println("From the tail");
-        queue = new Deque<Integer>();
-        for (int i = 0; i < 10; i++) {
-            queue.addLast(i);
-        }
-
-        System.out.println("Queue size before removing = " + queue.size());
-        for (int i = 0; i < 10; i++) {
-            queue.removeLast();
-        }
-
-        queue = new Deque<Integer>();
-        for (int i = 0; i < 10; i++) {
-            queue.addFirst(i);
-            queue.addLast(i);
-        }
-
-        System.out.println("Queue size before = " + queue.size());
-        for (int i = 0; i < 10; i++) {
-            queue.removeLast();
-            queue.removeFirst();
-        }
-
-        System.out.println("Queue size after = " + queue.size());
-
-        for (Integer item : (Iterable<Integer>) queue) {
-            System.out.println(item);
-        }
-
     }
 }

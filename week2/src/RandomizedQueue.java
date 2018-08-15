@@ -4,27 +4,29 @@ import edu.princeton.cs.algs4.StdRandom;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
-    private Item[] dataSet = (Item[]) new Object[0];
+    private Item[] dataSet = (Item[]) new Object[2];
     private int tail = 0;
 
     private class MyIterator implements Iterator<Item> {
         private int i = tail;
+        final private int[] order = StdRandom.permutation(tail);
 
         @Override
         public boolean hasNext() {
-            return tail > 0;
+            return i > 0;
         }
 
         @Override
         public Item next() {
             if (!hasNext()) throw new java.util.NoSuchElementException();
-            return dataSet[--i];
+            int index = order[--i];
+            return dataSet[index];
         }
     }
 
     public boolean isEmpty()                 // is the deque empty?
     {
-        return dataSet.length == 0;
+        return tail == 0;
     }
 
     public int size()                        // return the number of items on the deque
@@ -58,6 +60,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     public Item dequeue()                    // remove and return a random item
     {
+        if (isEmpty()) throw new java.util.NoSuchElementException();
         int index = StdRandom.uniform(tail);
         Item delNode = dataSet[index];
         dataSet[index] = dataSet[--tail];
@@ -80,29 +83,4 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         return new MyIterator();
     }
 
-
-    public static void main(String[] args) {
-        RandomizedQueue<Integer> queue = new RandomizedQueue<Integer>();
-
-        for (int i = 0; i < 10; i++) {
-            queue.enqueue(i);
-        }
-
-        System.out.println(queue.sample());
-        System.out.println(queue.sample());
-        System.out.println(queue.sample());
-
-        System.out.println("Queue size before = " + queue.size());
-        for (int i = 0; i < 10; i++) {
-            queue.dequeue();
-        }
-        System.out.println("Queue size after = " + queue.size());
-
-        Iterator<Integer> iterator = queue.iterator();
-        while (iterator.hasNext()) {
-            Integer node = iterator.next();
-            System.out.printf("%s", node);
-        }
-
-    }
 }
