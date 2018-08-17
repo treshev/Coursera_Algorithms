@@ -20,15 +20,18 @@ public class Client {
         StdDraw.enableDoubleBuffering();
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768);
+        StdDraw.setPenColor(StdDraw.RED);
+        StdDraw.setPenRadius(0.01);
         for (Point p : points) {
             p.draw();
         }
         StdDraw.show();
 
 
-
+        StdDraw.setPenColor(StdDraw.BLACK);
+        StdDraw.setPenRadius();
         // print and draw the line segments
-        FastCollinearPoints collinear = new FastCollinearPoints(points);
+        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
         for (LineSegment segment : collinear.segments()) {
             StdOut.println(segment);
             segment.draw();
