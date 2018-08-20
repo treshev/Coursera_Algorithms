@@ -61,23 +61,23 @@ public class LineSegment {
         throw new UnsupportedOperationException();
     }
 
-    public boolean isPointBelongToSegment(Point point) {
-        return point.slopeTo(this.p) == point.slopeTo(this.q);
-    }
-
-    public boolean isPointsInSegment(Point start, Point end) {
-        if ((start == q || start == p) && (end == q || end == p)) {
-            return true;
-        }
-
-        if (start == q || start == p) {
-            return isPointBelongToSegment(end);
-        }
-
-        if (end == q || end == p) {
-            return isPointBelongToSegment(start);
-        }
-        return isPointBelongToSegment(start) && isPointBelongToSegment(end);
-
-    }
+//    public boolean isPointBelongToSegment(Point point) {
+//        return point.slopeTo(this.p) == point.slopeTo(this.q);
+//    }
+//
+//    public boolean isPointsInSegment(Point start, Point end) {
+//        if ((start == q || start == p) && (end == q || end == p)) {
+//            return true;
+//        }
+//
+//        if (start == q || start == p) {
+//            return isPointBelongToSegment(end);
+//        }
+//
+//        if (end == q || end == p) {
+//            return isPointBelongToSegment(start);
+//        }
+//        return isPointBelongToSegment(start) && isPointBelongToSegment(end);
+//
+//    }
 }

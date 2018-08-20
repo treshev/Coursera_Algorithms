@@ -1,7 +1,4 @@
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 
 public class BruteCollinearPoints {
 
@@ -17,38 +14,29 @@ public class BruteCollinearPoints {
 
         Arrays.sort(points);
 
-        Map maps = new HashMap();
+        int index = 0;
+        LineSegment[] tmpSegments = new LineSegment[points.length];
 
         for (int i = 0; i < points.length; i++) {
-            Point current = points[0];
-            for (int j = i; j < points.length; j++) {
+            for (int j = i + 1; j < points.length; j++) {
+                for (int k = j + 1; k < points.length; k++) {
+                    for (int l = k + 1; l < points.length; l++) {
+                        Point p = points[i];
+                        Point q = points[j];
+                        Point r = points[k];
+                        Point s = points[l];
 
+                        if (p.slopeTo(q) == p.slopeTo(r) && p.slopeTo(r) == p.slopeTo(s)) {
+                            tmpSegments[index] = new LineSegment(p, s);
+                            index++;
+                        }
+
+                    }
+                }
             }
         }
-
-
-//        onlyFourPoints(points);
-    }
-
-    private void onlyFourPoints(Point[] points) {
-        Point p = points[0];
-        Point q = points[1];
-        Point r = points[2];
-        Point s = points[3];
-
-        if (p.slopeTo(q) == p.slopeTo(r) && p.slopeTo(r) == p.slopeTo(s)) {
-            segments = new LineSegment[]{new LineSegment(p, s)};
-        }
-
-        if (p.slopeTo(q) == p.slopeTo(r) && p.slopeTo(r) != p.slopeTo(s)) {
-            segments = new LineSegment[]{new LineSegment(p, r), new LineSegment(r, s)};
-        } else if (p.slopeTo(q) != p.slopeTo(r) && q.slopeTo(r) == q.slopeTo(s)) {
-            segments = new LineSegment[]{new LineSegment(p, q), new LineSegment(p, s)};
-        } else if (p.slopeTo(q) != p.slopeTo(r) && p.slopeTo(r) == p.slopeTo(s)) {
-            segments = new LineSegment[]{new LineSegment(p, s), new LineSegment(p, q)};
-        } else {
-            segments = new LineSegment[]{new LineSegment(p, q), new LineSegment(q, r), new LineSegment(r, s)};
-        }
+        segments = new LineSegment[index];
+        System.arraycopy(tmpSegments, 0, segments, 0, index);
     }
 
     public int numberOfSegments()        // the number of line segments

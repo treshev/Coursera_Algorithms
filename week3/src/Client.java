@@ -32,6 +32,8 @@ public class Client {
         StdDraw.setPenRadius();
         // print and draw the line segments
         FastCollinearPoints collinear = new FastCollinearPoints(points);
+//        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+        System.out.println("Segments = "+collinear.numberOfSegments());
         for (LineSegment segment : collinear.segments()) {
             StdOut.println(segment);
             segment.draw();
