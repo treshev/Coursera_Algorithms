@@ -1,32 +1,44 @@
 import java.util.Arrays;
 
-public class BruteCollinearPoints {
+public class BruteCollinearPoints
+{
 
-    private LineSegment[] segments = null;
+    private final LineSegment[] segments;
 
     public BruteCollinearPoints(Point[] points)    // finds all line segments containing 4 points
     {
         if (points == null) throw new java.lang.IllegalArgumentException();
 
-        for (Point point : points) {
+        for (Point point : points)
+        {
             if (point == null) throw new java.lang.IllegalArgumentException();
         }
 
         Arrays.sort(points);
 
+        for (int i = 0; i < points.length - 1; i++)
+        {
+            if (points[i].compareTo(points[i + 1]) == 0) throw new java.lang.IllegalArgumentException();
+        }
+
         int index = 0;
         LineSegment[] tmpSegments = new LineSegment[points.length];
 
-        for (int i = 0; i < points.length; i++) {
-            for (int j = i + 1; j < points.length; j++) {
-                for (int k = j + 1; k < points.length; k++) {
-                    for (int l = k + 1; l < points.length; l++) {
+        for (int i = 0; i < points.length; i++)
+        {
+            for (int j = i + 1; j < points.length; j++)
+            {
+                for (int k = j + 1; k < points.length; k++)
+                {
+                    for (int m = k + 1; m < points.length; m++)
+                    {
                         Point p = points[i];
                         Point q = points[j];
                         Point r = points[k];
-                        Point s = points[l];
+                        Point s = points[m];
 
-                        if (p.slopeTo(q) == p.slopeTo(r) && p.slopeTo(r) == p.slopeTo(s)) {
+                        if (p.slopeTo(q) == p.slopeTo(r) && p.slopeTo(r) == p.slopeTo(s))
+                        {
                             tmpSegments[index] = new LineSegment(p, s);
                             index++;
                         }
@@ -46,6 +58,6 @@ public class BruteCollinearPoints {
 
     public LineSegment[] segments()                // the line segments
     {
-        return segments;
+        return Arrays.copyOf(segments, segments.length);
     }
 }
