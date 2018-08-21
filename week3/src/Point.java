@@ -17,7 +17,7 @@ public class Point implements Comparable<Point>
             double d1 = slopeTo(o1);
             double d2 = slopeTo(o2);
             if (d1 < d2) return -1;
-            if (d1 == d2) return 0;
+            if (Double.compare(d1, d2) == 0) return 0;
             return 1;
         }
     }

@@ -1,20 +1,54 @@
 import java.util.Arrays;
+import java.util.Objects;
 
 public class FastCollinearPoints
 {
 
-    private final LineSegment[] segments;
+    private LineSegment[] segments = new LineSegment[2];
+    private PointMap[] map = new PointMap[2];
+    private int mapIndex = 0;
 
-    public FastCollinearPoints(Point[] points)    // finds all line segments containing 4 points
+    private class PointMap
     {
-        if (points == null)
+        final Point point;
+        final double tang;
+
+        PointMap(Point point, double tang)
+        {
+            this.point = point;
+            this.tang = tang;
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+            PointMap pointMap = (PointMap) obj;
+            return Double.compare(pointMap.tang, tang) == 0 &&
+                    Objects.equals(point, pointMap.point);
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return point.hashCode();
+        }
+    }
+
+
+    public FastCollinearPoints(Point[] originalPoints)    // finds all line segments containing 4 points
+    {
+        if (originalPoints == null)
         {
             throw new java.lang.IllegalArgumentException();
         }
 
-        for (Point point : points)
+        Point[] points = Arrays.copyOf(originalPoints, originalPoints.length);
+
+        for (int i = 0; i < points.length; i++)
         {
-            if (point == null) throw new java.lang.IllegalArgumentException();
+            if (points[i] == null) throw new java.lang.IllegalArgumentException();
         }
 
         Arrays.sort(points);
@@ -23,11 +57,6 @@ public class FastCollinearPoints
         {
             if (points[i].compareTo(points[i + 1]) == 0) throw new java.lang.IllegalArgumentException();
         }
-
-        Object[] visitedPoints = new Object[1];
-
-        Object[] tmpSegments = new Object[2];
-        int segmentsIndex = 0;
 
         for (int i = 0; i < points.length - 3; i++)
         {
@@ -38,104 +67,83 @@ public class FastCollinearPoints
             System.arraycopy(points, i + 1, currentArray, 0, currentArray.length);
             Arrays.sort(currentArray, current.slopeOrder());
 
-            Object[] localVisitedPoints = new Object[2];
-            int localVisitedIndex = 0;
-
             for (int j = 0; j < currentArray.length - 1; j++)
             {
-                if (new Double(current.slopeTo(currentArray[j])).equals(current.slopeTo(currentArray[j + 1])))
+                if (Double.compare(current.slopeTo(currentArray[j]), current.slopeTo(currentArray[j + 1])) == 0)
                 {
-                    localVisitedPoints = addItem(localVisitedPoints, localVisitedIndex++, currentArray[j]);
                     pointCount++;
                 }
                 else if (pointCount >= 3)
                 {
-                    localVisitedPoints = addItem(localVisitedPoints, localVisitedIndex++, current);
-                    localVisitedPoints = addItem(localVisitedPoints, localVisitedIndex, currentArray[j]);
-
-                    LineSegment newSegment = new LineSegment(current, currentArray[j]);
-                    if (notUsed(localVisitedPoints, visitedPoints))
-                    {
-                        tmpSegments = addItem(tmpSegments, segmentsIndex, newSegment);
-                        segmentsIndex++;
-
-                        for (Object localVisitedPoint : localVisitedPoints)
-                        {
-                            if (localVisitedPoint != null)
-                            {
-                                visitedPoints = addVisitedPoint(visitedPoints, localVisitedPoint);
-                            }
-                        }
-                    }
-                    localVisitedPoints = new Object[2];
-                    localVisitedIndex = 0;
+                    addSegment(current, currentArray[j]);
                     pointCount = 1;
                 }
                 else
                 {
-                    localVisitedPoints = new Object[2];
-                    localVisitedIndex = 0;
                     pointCount = 1;
                 }
             }
             if (pointCount >= 3)
             {
-                localVisitedPoints = addItem(localVisitedPoints, localVisitedIndex++, current);
-                localVisitedPoints = addItem(localVisitedPoints, localVisitedIndex, currentArray[currentArray.length - 1]);
-                LineSegment lineSegment = new LineSegment(current, currentArray[currentArray.length - 1]);
-
-                if (notUsed(localVisitedPoints, visitedPoints))
-                {
-                    tmpSegments = addItem(tmpSegments, segmentsIndex, lineSegment);
-                    segmentsIndex++;
-
-                    for (Object localVisitedPoint : localVisitedPoints)
-                    {
-                        if (localVisitedPoint != null)
-                        {
-                            visitedPoints = addVisitedPoint(visitedPoints, localVisitedPoint);
-                        }
-
-                    }
-                }
+                addSegment(current, currentArray[currentArray.length - 1]);
             }
         }
-        segments = new LineSegment[segmentsIndex];
-        System.arraycopy(tmpSegments, 0, segments, 0, segmentsIndex);
-    }
-
-    private Object[] addVisitedPoint(Object[] array, Object item)
-    {
-        int nail = 0;
-        for (Object obj : array)
+        int index = 0;
+        for (LineSegment segment : segments)
         {
-            if (obj != null)
+            if (segment != null)
             {
-                Point point = (Point) obj;
-                if (point.compareTo((Point) item) == 0)
-                    return array;
-                else
-                {
-                    nail++;
-                }
+                index++;
             }
         }
-        return addItem(array, nail, item);
+        LineSegment[] tmp = new LineSegment[index];
+        System.arraycopy(segments, 0, tmp, 0, index);
+        segments = tmp;
     }
 
-    private Object[] addItem(Object[] array, int index, Object item)
+    private void addSegment(Point p1, Point p2)
     {
-        if (index == array.length)
+        double tang = p1.slopeTo(p2);
+        PointMap pointMap = new PointMap(p2, tang);
+
+        for (PointMap pm : map)
+        {
+            if (pm != null && pm.equals(pointMap)) return;
+        }
+
+        if (map.length == mapIndex)
+        {
+            map = resizeMap(map, map.length * 2);
+        }
+        map[mapIndex++] = pointMap;
+
+        LineSegment lineSegment = new LineSegment(p1, p2);
+        segments = addSegment(segments, lineSegment);
+    }
+
+    private LineSegment[] addSegment(LineSegment[] array, LineSegment item)
+    {
+        int tail = 0;
+
+        for (LineSegment lineSegment : array)
+        {
+            if (lineSegment != null)
+            {
+                tail++;
+            }
+        }
+
+        if (tail == array.length)
         {
             array = resize(array, 2 * array.length);
         }
-        array[index] = item;
+        array[tail] = item;
         return array;
     }
 
-    private Object[] resize(Object[] array, int newSize)
+    private LineSegment[] resize(LineSegment[] array, int newSize)
     {
-        Object[] newDataSet = new Object[newSize];
+        LineSegment[] newDataSet = new LineSegment[newSize];
         int i = 0;
         int j = 0;
         while (i < newSize && j < array.length)
@@ -150,35 +158,21 @@ public class FastCollinearPoints
         return newDataSet;
     }
 
-    private boolean notUsed(Object[] localVisited, Object[] globalVisited)
+    private PointMap[] resizeMap(PointMap[] array, int newSize)
     {
-        for (Object local : localVisited)
+        PointMap[] newDataSet = new PointMap[newSize];
+        int i = 0;
+        int j = 0;
+        while (i < newSize && j < array.length)
         {
-            if (localVisited.length > globalVisited.length) return true;
-
-            if (local != null)
+            if (array[j] != null)
             {
-                boolean localoPointIsExists = false;
-                Point localPoint = (Point) local;
-
-                for (Object global : globalVisited)
-                {
-                    if (global != null)
-                    {
-                        Point globalPoint = (Point) global;
-                        if (localPoint.compareTo(globalPoint) == 0)
-                        {
-                            localoPointIsExists = true;
-                        }
-                    }
-                }
-                if (!localoPointIsExists)
-                {
-                    return true;
-                }
+                newDataSet[i] = array[j];
+                i++;
             }
+            j++;
         }
-        return false;
+        return newDataSet;
     }
 
     public int numberOfSegments()

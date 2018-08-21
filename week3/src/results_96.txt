@@ -1,0 +1,145 @@
+See the Assessment Guide for information on how to interpret this report.
+
+ASSESSMENT SUMMARY
+
+Compilation:  PASSED
+API:          PASSED
+
+Spotbugs:     PASSED
+PMD:          PASSED
+Checkstyle:   FAILED (0 errors, 1 warning)
+
+Correctness:  40/41 tests passed
+Memory:       1/1 tests passed
+Timing:       35/41 tests passed
+
+Aggregate score: 95.61%
+[Compilation: 5%, API: 5%, Spotbugs: 0%, PMD: 0%, Checkstyle: 0%, Correctness: 60%, Memory: 10%, Timing: 20%]
+
+% checkstyle *.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for Point.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for BruteCollinearPoints.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for FastCollinearPoints.java
+*-----------------------------------------------------------
+[WARN] FastCollinearPoints.java:4:1: Defining a nested class in this program suggests poor design. [Design]
+Checkstyle ends with 0 errors and 1 warning.
+
+================================================================
+Testing correctness of FastCollinearPoints
+*-----------------------------------------------------------
+
+Test 16: throws an exception if either constructor argument is null
+         or any entry in array is null
+  * argument is null
+  * Point[] of length 10, number of null entries = 1
+    - constructor throws wrong exception
+    - constructor throws a java.lang.NullPointerException
+    - constructor should throw a java.lang.IllegalArgumentException
+     10
+     14658  7543
+     null
+     11174 15708
+      8823 20951
+      3923  5292
+      5436   469
+      8151 28648
+     23951  1664
+     27159  6017
+      7789  4423
+
+  * Point[] of length 10, number of null entries = 10
+    - constructor throws wrong exception
+    - constructor throws a java.lang.NullPointerException
+    - constructor should throw a java.lang.IllegalArgumentException
+     10
+     null
+     null
+     null
+     null
+     null
+     null
+     null
+     null
+     null
+     null
+
+  * Point[] of length 4, number of null entries = 1
+    - constructor throws wrong exception
+    - constructor throws a java.lang.NullPointerException
+    - constructor should throw a java.lang.IllegalArgumentException
+     4
+     13406 13578
+      2147 20028
+      6854  8736
+     null
+
+  * Point[] of length 3, number of null entries = 1
+    - constructor throws wrong exception
+    - constructor throws a java.lang.NullPointerException
+    - constructor should throw a java.lang.IllegalArgumentException
+     3
+     null
+     15582 11206
+      3315 28379
+
+  * Point[] of length 2, number of null entries = 1
+    - constructor throws wrong exception
+    - constructor throws a java.lang.NullPointerException
+    - constructor should throw a java.lang.IllegalArgumentException
+     2
+      9834  6999
+     null
+
+  * Point[] of length 1, number of null entries = 1
+    - constructor fails to throw an exception
+     1
+     null
+
+==> FAILED
+
+Total: 20/21 tests passed!
+
+********************************************************************************
+*  TIMING
+********************************************************************************
+
+Timing FastCollinearPoints
+*-----------------------------------------------------------
+Running 31 total tests.
+
+Test 3a-3g: Find collinear points among the n points on an n/4-by-4 grid
+
+                                                      slopeTo()
+             n    time     slopeTo()   compare()  + 2*compare()        compareTo()
+-----------------------------------------------------------------------------------------------
+=> passed    64   0.00        4042        6975          17992                  368
+=> passed   128   0.00       16458       26476          69410                  868
+=> passed   256   0.02       66378       69827         206032                 1985
+=> passed   512   0.10      266570      245903         758376                 4496
+=> passed  1024   1.11     1068362      927949        2924260                10017
+=> passed  2048  17.54     4277578     3607526       11492630                22013
+Aborting: time limit of 10 seconds exceeded
+
+Test 4a-4g: Find collinear points among the n points on an n/8-by-8 grid
+
+                                                      slopeTo()
+             n    time     slopeTo()   compare()  + 2*compare()        compareTo()
+-----------------------------------------------------------------------------------------------
+=> passed    64   0.00        4074        7700          19474                  370
+=> passed   128   0.00       16618       35865          88348                  866
+=> passed   256   0.01       67050      127119         321288                 1987
+=> passed   512   0.08      269290      385257        1039804                 4490
+=> passed  1024   1.00     1079274     1438625        3956524                 9986
+=> passed  2048  14.73     4321258     5568216       15457690                22053
+Aborting: time limit of 10 seconds exceeded
+
+Total: 25/31 tests passed!
+
+
+================================================================

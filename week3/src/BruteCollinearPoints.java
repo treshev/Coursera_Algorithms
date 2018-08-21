@@ -5,9 +5,11 @@ public class BruteCollinearPoints
 
     private final LineSegment[] segments;
 
-    public BruteCollinearPoints(Point[] points)    // finds all line segments containing 4 points
+    public BruteCollinearPoints(Point[] originalPoints)    // finds all line segments containing 4 points
     {
-        if (points == null) throw new java.lang.IllegalArgumentException();
+        if (originalPoints == null) throw new java.lang.IllegalArgumentException();
+
+        Point[] points = Arrays.copyOf(originalPoints, originalPoints.length);
 
         for (Point point : points)
         {
@@ -37,7 +39,8 @@ public class BruteCollinearPoints
                         Point r = points[k];
                         Point s = points[m];
 
-                        if (p.slopeTo(q) == p.slopeTo(r) && p.slopeTo(r) == p.slopeTo(s))
+                        if (Double.compare(p.slopeTo(q), p.slopeTo(r)) == 0
+                                && Double.compare(p.slopeTo(r), p.slopeTo(s)) == 0)
                         {
                             tmpSegments[index] = new LineSegment(p, s);
                             index++;

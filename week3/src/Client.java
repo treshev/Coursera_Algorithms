@@ -35,6 +35,8 @@ public class Client {
         StdDraw.setPenRadius();
         // print and draw the line segments
         Date  start = new Date();
+
+        points[8]= null;
         FastCollinearPoints collinear = new FastCollinearPoints(points);
         Date end = new Date();
         System.out.println("Time: " + (end.getTime()-start.getTime())/1000);
@@ -43,14 +45,14 @@ public class Client {
             StdOut.println(segment);
             segment.draw();
         }
-
-        BruteCollinearPoints collinearB = new BruteCollinearPoints(points);
-        System.out.println("Segments = "+collinearB.numberOfSegments());
-        for (LineSegment segment : collinearB.segments()) {
-            StdOut.println(segment);
-            segment.draw();
-        }
-
+//
+//        BruteCollinearPoints collinearB = new BruteCollinearPoints(points);
+//        System.out.println("Segments = "+collinearB.numberOfSegments());
+//        for (LineSegment segment : collinearB.segments()) {
+//            StdOut.println(segment);
+//            segment.draw();
+//        }
+//
         StdDraw.show();
     }
 }
