@@ -36,13 +36,12 @@ public class Client {
         // print and draw the line segments
         Date  start = new Date();
 
-        points[8]= null;
         FastCollinearPoints collinear = new FastCollinearPoints(points);
         Date end = new Date();
         System.out.println("Time: " + (end.getTime()-start.getTime())/1000);
         System.out.println("Segments = "+collinear.numberOfSegments());
         for (LineSegment segment : collinear.segments()) {
-            StdOut.println(segment);
+//            StdOut.println(segment);
             segment.draw();
         }
 //

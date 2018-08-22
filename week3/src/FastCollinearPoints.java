@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Objects;
 
 public class FastCollinearPoints
@@ -44,11 +45,11 @@ public class FastCollinearPoints
             throw new java.lang.IllegalArgumentException();
         }
 
-        Point[] points = Arrays.copyOf(originalPoints, originalPoints.length);
+        Point[] points = originalPoints.clone();
 
-        for (int i = 0; i < points.length; i++)
+        for (Point point : points)
         {
-            if (points[i] == null) throw new java.lang.IllegalArgumentException();
+            if (point == null) throw new IllegalArgumentException();
         }
 
         Arrays.sort(points);
@@ -67,9 +68,12 @@ public class FastCollinearPoints
             System.arraycopy(points, i + 1, currentArray, 0, currentArray.length);
             Arrays.sort(currentArray, current.slopeOrder());
 
+            double slope = current.slopeTo(currentArray[0]);
             for (int j = 0; j < currentArray.length - 1; j++)
             {
-                if (Double.compare(current.slopeTo(currentArray[j]), current.slopeTo(currentArray[j + 1])) == 0)
+                double slopeNext = current.slopeTo(currentArray[j + 1]);
+
+                if (Double.compare(slope, slopeNext) == 0)
                 {
                     pointCount++;
                 }
@@ -82,6 +86,7 @@ public class FastCollinearPoints
                 {
                     pointCount = 1;
                 }
+                slope = slopeNext;
             }
             if (pointCount >= 3)
             {
@@ -182,6 +187,6 @@ public class FastCollinearPoints
 
     public LineSegment[] segments()
     {
-        return Arrays.copyOf(segments, segments.length);
+        return segments.clone();
     }
 }
