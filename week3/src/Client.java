@@ -18,6 +18,10 @@ public class Client {
             points[i] = new Point(x, y);
         }
 
+        int N = 1024*8;
+        int greed = 4;
+        points = generateField(N, greed);
+
         // draw the points
         StdDraw.enableDoubleBuffering();
         StdDraw.setXscale(0, 32768);
@@ -53,5 +57,20 @@ public class Client {
 //        }
 //
         StdDraw.show();
+    }
+
+    private static Point[] generateField(int n, int greed)
+    {
+        Point[] points = new Point[n];
+        int index = 0;
+
+        for (int i = 0; i < n/greed; i++)
+        {
+            for (int j = 0; j < greed; j++)
+            {
+                points[index++]=new Point(i,j);
+            }
+        }
+        return points;
     }
 }

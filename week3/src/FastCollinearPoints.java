@@ -1,48 +1,19 @@
+import com.sun.org.apache.bcel.internal.generic.ALOAD;
+
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.Objects;
+import java.util.Comparator;
 
 public class FastCollinearPoints
 {
 
-    private LineSegment[] segments = new LineSegment[2];
-    private PointMap[] map = new PointMap[2];
-    private int mapIndex = 0;
-
-    private class PointMap
-    {
-        final Point point;
-        final double tang;
-
-        PointMap(Point point, double tang)
-        {
-            this.point = point;
-            this.tang = tang;
-        }
-
-        @Override
-        public boolean equals(Object obj)
-        {
-            if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
-            PointMap pointMap = (PointMap) obj;
-            return Double.compare(pointMap.tang, tang) == 0 &&
-                    Objects.equals(point, pointMap.point);
-        }
-
-        @Override
-        public int hashCode()
-        {
-            return point.hashCode();
-        }
-    }
-
+    private ArrayList<LineSegment> segments = new ArrayList<>();
 
     public FastCollinearPoints(Point[] originalPoints)    // finds all line segments containing 4 points
     {
         if (originalPoints == null)
         {
-            throw new java.lang.IllegalArgumentException();
+            throw new IllegalArgumentException();
         }
 
         Point[] points = originalPoints.clone();
@@ -56,9 +27,10 @@ public class FastCollinearPoints
 
         for (int i = 0; i < points.length - 1; i++)
         {
-            if (points[i].compareTo(points[i + 1]) == 0) throw new java.lang.IllegalArgumentException();
+            if (points[i].compareTo(points[i + 1]) == 0) throw new IllegalArgumentException();
         }
 
+        ArrayList<Point[]> lines = new ArrayList<>();
         for (int i = 0; i < points.length - 3; i++)
         {
             int pointCount = 1;
@@ -79,7 +51,7 @@ public class FastCollinearPoints
                 }
                 else if (pointCount >= 3)
                 {
-                    addSegment(current, currentArray[j]);
+                    lines.add(new Point[]{current, currentArray[j]});
                     pointCount = 1;
                 }
                 else
@@ -90,103 +62,48 @@ public class FastCollinearPoints
             }
             if (pointCount >= 3)
             {
-                addSegment(current, currentArray[currentArray.length - 1]);
+                lines.add(new Point[]{current, currentArray[currentArray.length - 1]});
             }
         }
-        int index = 0;
-        for (LineSegment segment : segments)
+
+        lines.sort(Comparator.comparingDouble(o -> o[0].slopeTo(o[1])));
+
+        boolean isFirst = true;
+        for (int i = 0; i < lines.size() - 1; i++)
         {
-            if (segment != null)
+            if (lines.get(i)[1] == lines.get(i + 1)[1])
             {
-                index++;
+                if (isFirst)
+                {
+                    segments.add(new LineSegment(lines.get(i)[0], lines.get(i)[1]));
+                    isFirst = false;
+                }
             }
-        }
-        LineSegment[] tmp = new LineSegment[index];
-        System.arraycopy(segments, 0, tmp, 0, index);
-        segments = tmp;
-    }
-
-    private void addSegment(Point p1, Point p2)
-    {
-        double tang = p1.slopeTo(p2);
-        PointMap pointMap = new PointMap(p2, tang);
-
-        for (PointMap pm : map)
-        {
-            if (pm != null && pm.equals(pointMap)) return;
-        }
-
-        if (map.length == mapIndex)
-        {
-            map = resizeMap(map, map.length * 2);
-        }
-        map[mapIndex++] = pointMap;
-
-        LineSegment lineSegment = new LineSegment(p1, p2);
-        segments = addSegment(segments, lineSegment);
-    }
-
-    private LineSegment[] addSegment(LineSegment[] array, LineSegment item)
-    {
-        int tail = 0;
-
-        for (LineSegment lineSegment : array)
-        {
-            if (lineSegment != null)
+            else
             {
-                tail++;
+                if (isFirst)
+                {
+                    segments.add(new LineSegment(lines.get(i)[0], lines.get(i)[1]));
+                }
+                else
+                {
+                    isFirst = true;
+                }
             }
         }
+        if (isFirst) segments.add(new LineSegment(lines.get(lines.size() - 1)[0],
+                lines.get(lines.size() - 1)[1]));
 
-        if (tail == array.length)
-        {
-            array = resize(array, 2 * array.length);
-        }
-        array[tail] = item;
-        return array;
-    }
 
-    private LineSegment[] resize(LineSegment[] array, int newSize)
-    {
-        LineSegment[] newDataSet = new LineSegment[newSize];
-        int i = 0;
-        int j = 0;
-        while (i < newSize && j < array.length)
-        {
-            if (array[j] != null)
-            {
-                newDataSet[i] = array[j];
-                i++;
-            }
-            j++;
-        }
-        return newDataSet;
-    }
-
-    private PointMap[] resizeMap(PointMap[] array, int newSize)
-    {
-        PointMap[] newDataSet = new PointMap[newSize];
-        int i = 0;
-        int j = 0;
-        while (i < newSize && j < array.length)
-        {
-            if (array[j] != null)
-            {
-                newDataSet[i] = array[j];
-                i++;
-            }
-            j++;
-        }
-        return newDataSet;
     }
 
     public int numberOfSegments()
     {
-        return (segments != null) ? segments.length : 0;
+        return (segments != null) ? segments.size() : 0;
     }
 
     public LineSegment[] segments()
     {
-        return segments.clone();
+        return segments.toArray(new LineSegment[0]);
     }
 }
