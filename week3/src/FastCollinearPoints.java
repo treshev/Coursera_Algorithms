@@ -1,13 +1,10 @@
-import com.sun.org.apache.bcel.internal.generic.ALOAD;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 
 public class FastCollinearPoints
 {
 
-    private ArrayList<LineSegment> segments = new ArrayList<>();
+    private final ArrayList<LineSegment> segments = new ArrayList<>();
 
     public FastCollinearPoints(Point[] originalPoints)    // finds all line segments containing 4 points
     {
@@ -66,12 +63,13 @@ public class FastCollinearPoints
             }
         }
 
-        lines.sort(Comparator.comparingDouble(o -> o[0].slopeTo(o[1])));
+        lines.sort((o1, o2) -> (Double.compare(o1[0].slopeTo(o1[1]), o2[0].slopeTo(o2[1])) != 0)
+                ? Double.compare(o1[0].slopeTo(o1[1]), o2[0].slopeTo(o2[1])) : o1[1].compareTo(o2[1]));
 
         boolean isFirst = true;
         for (int i = 0; i < lines.size() - 1; i++)
         {
-            if (lines.get(i)[1] == lines.get(i + 1)[1])
+            if (lines.get(i)[1] == lines.get(i + 1)[1] && Double.compare(lines.get(i)[0].slopeTo(lines.get(i)[1]), lines.get(i + 1)[0].slopeTo(lines.get(i + 1)[1])) == 0)
             {
                 if (isFirst)
                 {
@@ -91,7 +89,7 @@ public class FastCollinearPoints
                 }
             }
         }
-        if (isFirst) segments.add(new LineSegment(lines.get(lines.size() - 1)[0],
+        if (isFirst && !lines.isEmpty()) segments.add(new LineSegment(lines.get(lines.size() - 1)[0],
                 lines.get(lines.size() - 1)[1]));
 
 
@@ -99,7 +97,7 @@ public class FastCollinearPoints
 
     public int numberOfSegments()
     {
-        return (segments != null) ? segments.size() : 0;
+        return segments.size();
     }
 
     public LineSegment[] segments()
