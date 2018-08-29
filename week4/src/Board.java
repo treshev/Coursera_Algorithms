@@ -115,7 +115,7 @@ public class Board
             if (iZero > 0) neighborsList.add(swap(iZero - 1, jZero, iZero, jZero));
             if (iZero < n - 1) neighborsList.add(swap(iZero + 1, jZero, iZero, jZero));
             if (jZero > 0) neighborsList.add(swap(iZero, jZero - 1, iZero, jZero));
-            if (jZero < n - 1) neighborsList.add(swap(iZero, jZero, iZero + 1, jZero));
+            if (jZero < n - 1) neighborsList.add(swap(iZero, jZero+1, iZero, jZero));
         }
         return neighborsList;
     }
@@ -123,7 +123,7 @@ public class Board
     private Board swap(int newi, int newj, int oldi, int oldj)
     {
         int n = dimension();
-        if (!(newi == oldi && newj == oldj) && newi > 0 && newi < n && newj > 0 && newj < n)
+        if (!(newi == oldi && newj == oldj) && newi >= 0 && newi < n && newj >= 0 && newj < n)
         {
             int[][] newBoardArray = new int[n][n];
             for (int i = 0; i < n; i++)
@@ -155,7 +155,7 @@ public class Board
 
     public static void main(String[] args) // unit tests (not graded)
     {
-        int n = 3;
+        int n = 2;
         int[][] arr = new int[n][n];
         int item = 9;
         for (int i = 0; i < n; i++)
@@ -165,7 +165,11 @@ public class Board
                 arr[i][j] = item--;
             }
         }
-        arr[n - 1][n - 1] = 0;
+        arr[0][0]=1;
+        arr[0][1]=0;
+        arr[1][0]=3;
+        arr[1][1]=2;
+//        arr[n - 1][n - 1] = 0;
         Board b = new Board(arr);
         System.out.println(b);
         System.out.println(b.dimension());

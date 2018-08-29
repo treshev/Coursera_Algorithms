@@ -60,7 +60,7 @@ public class PuzzleChecker
 
         if (args.length == 0)
         {
-            for (String filename : listFilesForFolder(new File("week4\\test")))
+            for (String filename : listFilesForFolder(new File("test")))
             {
                 // read in the board specified in the filename
                 System.out.println(filename);
