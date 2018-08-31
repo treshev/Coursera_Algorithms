@@ -12,7 +12,7 @@ public class Client
 
         // create initial board from file
 //        In in = new In(args[0]);
-        String fileName = "week4/test/puzzle4x4-80.txt";
+        String fileName = "week4/test/notDone/puzzle4x4-45.txt";
         In in = new In(fileName);
         int n = in.readInt();
         int[][] blocks = new int[n][n];

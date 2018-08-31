@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Board
 {
-    private final int[][] board;
+    private final char[][] board;
     private ArrayList<Board> neighborsList;
     private int zeroI;
     private int zeroJ;
@@ -16,26 +16,26 @@ public class Board
         int hammingCount = 0;
         int manhattanCount = 0;
 
-        int[][] newBoardArray = new int[n][n];
+        char[][] newBoardArray = new char[n][n];
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)
             {
-                newBoardArray[i][j] = blocks[i][j];
-                if (newBoardArray[i][j] == 0)
+                if (blocks[i][j] == 0)
                 {
                     zeroI = i;
                     zeroJ = j;
                 }
-                else if (newBoardArray[i][j] != i * n + (j + 1))
+                else if (blocks[i][j] != i * n + (j + 1))
                 {
                     hammingCount++;
 
-                    int x = newBoardArray[i][j];
+                    int x = blocks[i][j];
                     int si = (x - 1) / n;
                     int sj = abs(x - si * n - 1);
                     manhattanCount += abs(i - si) + abs(j - sj);
                 }
+                newBoardArray[i][j] = (char) blocks[i][j];
             }
         }
         this.board = newBoardArray;
@@ -74,7 +74,10 @@ public class Board
         int[][] newBoardArray = new int[n][n];
         for (int i = 0; i < n; i++)
         {
-            System.arraycopy(this.board[i], 0, newBoardArray[i], 0, n);
+            for (int j = 0; j < n; j++)
+            {
+                newBoardArray[i][j] = (int) board[i][j];
+            }
         }
 
         if (newBoardArray[0][0] != 0 && newBoardArray[0][1] != 0)
@@ -132,7 +135,10 @@ public class Board
         int[][] newBoardArray = new int[n][n];
         for (int i = 0; i < n; i++)
         {
-            newBoardArray[i] = this.board[i].clone();
+            for (int j = 0; j < n; j++)
+            {
+                newBoardArray[i][j] = (int) board[i][j];
+            }
         }
         newBoardArray[oldi][oldj] = newBoardArray[newi][newj];
         newBoardArray[newi][newj] = 0;
@@ -147,7 +153,7 @@ public class Board
         {
             for (int j = 0; j < n; j++)
             {
-                sb.append(String.format("%2d ", board[i][j]));
+                sb.append(String.format("%2d ", (int) board[i][j]));
             }
             sb.append("\n");
         }

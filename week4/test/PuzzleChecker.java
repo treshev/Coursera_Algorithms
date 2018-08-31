@@ -59,10 +59,8 @@ public class PuzzleChecker
         System.out.println("Working Directory = " +
                 System.getProperty("user.dir"));
 
-        for (int iter = 0; iter < 3; iter++)
+        for (int iter = 0; iter < 1; iter++)
         {
-
-
             long globalStart = new Date().getTime();
             if (args.length == 0)
             {
@@ -81,10 +79,10 @@ public class PuzzleChecker
                     }
                     long start = new Date().getTime();
                     // solve the slider puzzle
-//                    System.out.print(filename);
+                    System.out.print(filename);
                     Board initial = new Board(tiles);
                     Solver solver = new Solver(initial);
-//                    StdOut.println(": " + solver.moves() + " : " + (new Date().getTime() - start));
+                    StdOut.println(": " + solver.moves() + " : " + (new Date().getTime() - start));
                 }
             }
             else
