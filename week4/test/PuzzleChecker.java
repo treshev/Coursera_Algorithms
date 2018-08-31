@@ -30,6 +30,7 @@ import edu.princeton.cs.algs4.StdOut;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PuzzleChecker
@@ -60,10 +61,9 @@ public class PuzzleChecker
 
         if (args.length == 0)
         {
-            for (String filename : listFilesForFolder(new File("test")))
+            for (String filename : listFilesForFolder(new File("week4\\test\\done")))
             {
                 // read in the board specified in the filename
-                System.out.println(filename);
                 In in = new In(filename);
                 int n = in.readInt();
                 int[][] tiles = new int[n][n];
@@ -74,12 +74,12 @@ public class PuzzleChecker
                         tiles[i][j] = in.readInt();
                     }
                 }
-
+                long start = new Date().getTime();
                 // solve the slider puzzle
+                System.out.print(filename);
                 Board initial = new Board(tiles);
                 Solver solver = new Solver(initial);
-//                StdOut.println(filename + ": " + solver.moves());
-                System.out.println(filename + ": " + solver.moves());
+                StdOut.println(": " + solver.moves() + " : " + (new Date().getTime() - start));
             }
         }
         else
@@ -103,7 +103,7 @@ public class PuzzleChecker
                 // solve the slider puzzle
                 Board initial = new Board(tiles);
                 Solver solver = new Solver(initial);
-                StdOut.println(filename + ": " + solver.moves());
+
             }
         }
     }
