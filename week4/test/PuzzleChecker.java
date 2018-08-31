@@ -59,56 +59,60 @@ public class PuzzleChecker
         System.out.println("Working Directory = " +
                 System.getProperty("user.dir"));
 
-
-        long globalStart = new Date().getTime();
-        if (args.length == 0)
+        for (int iter = 0; iter < 3; iter++)
         {
-            for (String filename : listFilesForFolder(new File("week4\\test\\done")))
+
+
+            long globalStart = new Date().getTime();
+            if (args.length == 0)
             {
-                // read in the board specified in the filename
-                In in = new In(filename);
-                int n = in.readInt();
-                int[][] tiles = new int[n][n];
-                for (int i = 0; i < n; i++)
+                for (String filename : listFilesForFolder(new File("week4\\test\\done")))
                 {
-                    for (int j = 0; j < n; j++)
+                    // read in the board specified in the filename
+                    In in = new In(filename);
+                    int n = in.readInt();
+                    int[][] tiles = new int[n][n];
+                    for (int i = 0; i < n; i++)
                     {
-                        tiles[i][j] = in.readInt();
+                        for (int j = 0; j < n; j++)
+                        {
+                            tiles[i][j] = in.readInt();
+                        }
                     }
+                    long start = new Date().getTime();
+                    // solve the slider puzzle
+//                    System.out.print(filename);
+                    Board initial = new Board(tiles);
+                    Solver solver = new Solver(initial);
+//                    StdOut.println(": " + solver.moves() + " : " + (new Date().getTime() - start));
                 }
-                long start = new Date().getTime();
-                // solve the slider puzzle
-                System.out.print(filename);
-                Board initial = new Board(tiles);
-                Solver solver = new Solver(initial);
-                StdOut.println(": " + solver.moves() + " : " + (new Date().getTime() - start));
             }
-        }
-        else
-        {
-            // for each command-line argument
-            for (String filename : args)
+            else
             {
-
-                // read in the board specified in the filename
-                In in = new In(filename);
-                int n = in.readInt();
-                int[][] tiles = new int[n][n];
-                for (int i = 0; i < n; i++)
+                // for each command-line argument
+                for (String filename : args)
                 {
-                    for (int j = 0; j < n; j++)
+
+                    // read in the board specified in the filename
+                    In in = new In(filename);
+                    int n = in.readInt();
+                    int[][] tiles = new int[n][n];
+                    for (int i = 0; i < n; i++)
                     {
-                        tiles[i][j] = in.readInt();
+                        for (int j = 0; j < n; j++)
+                        {
+                            tiles[i][j] = in.readInt();
+                        }
                     }
+
+                    // solve the slider puzzle
+                    Board initial = new Board(tiles);
+                    Solver solver = new Solver(initial);
+
                 }
-
-                // solve the slider puzzle
-                Board initial = new Board(tiles);
-                Solver solver = new Solver(initial);
-
             }
+            long current = new Date().getTime();
+            System.out.println("\nGLOBAL TIME = " + (current - globalStart) / 1000 + "sec. (" + (current - globalStart) + ")");
         }
-        long current = new Date().getTime();
-        System.out.println("\nGLOBAL TIME = " + (current - globalStart) / 1000 + "sec. (" + (current - globalStart) + ")");
     }
 }

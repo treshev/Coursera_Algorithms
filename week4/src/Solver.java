@@ -25,6 +25,8 @@ public class Solver
         @Override
         public int compareTo(Object obj)
         {
+            if (this == obj) return 0;
+
             MyBoard object = (MyBoard) obj;
             if (this.board.manhattan() + this.iter == object.board.manhattan() + object.iter)
             {
@@ -111,5 +113,6 @@ public class Solver
 
     public static void main(String[] args) // solve a slider puzzle (given below)
     {
+        System.out.println("Empty");
     }
 }

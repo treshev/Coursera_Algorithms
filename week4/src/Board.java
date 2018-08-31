@@ -13,56 +13,39 @@ public class Board
     public Board(int[][] blocks)
     {
         n = blocks.length;
+        int hammingCount = 0;
+        int manhattanCount = 0;
+
         int[][] newBoardArray = new int[n][n];
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)
             {
                 newBoardArray[i][j] = blocks[i][j];
-                if (blocks[i][j] == 0)
+                if (newBoardArray[i][j] == 0)
                 {
                     zeroI = i;
                     zeroJ = j;
                 }
-            }
-        }
-        this.board = newBoardArray;
-        int[] res = culculateHammingAndManhattan();
-        this.hamming = res[0];
-        this.manhattan = res[1];
-    }
-
-    public int dimension()                 // board dimension n
-    {
-        return this.n;
-    }
-
-    private int[] culculateHammingAndManhattan()
-    {
-        int[] result = new int[2];
-        int hammingCount = 0;
-        int manhattanCount = 0;
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (board[i][j] != 0 && board[i][j] != i * n + (j + 1))
+                else if (newBoardArray[i][j] != i * n + (j + 1))
                 {
                     hammingCount++;
-                }
 
-                if (board[i][j] != 0 && board[i][j] != i * n + (j + 1))
-                {
-                    int x = board[i][j];
+                    int x = newBoardArray[i][j];
                     int si = (x - 1) / n;
                     int sj = abs(x - si * n - 1);
                     manhattanCount += abs(i - si) + abs(j - sj);
                 }
             }
         }
-        result[0] = hammingCount;
-        result[1] = manhattanCount;
-        return result;
+        this.board = newBoardArray;
+        this.hamming = hammingCount;
+        this.manhattan = manhattanCount;
+    }
+
+    public int dimension()                 // board dimension n
+    {
+        return this.n;
     }
 
     public int hamming()                   // number of blocks out of place
@@ -109,10 +92,13 @@ public class Board
         return new Board(newBoardArray);
     }
 
-    public boolean equals(Object y)        // does this board equal y?
+    public boolean equals(Object obj)        // does this board equal y?
     {
-        if (y.getClass() != Board.class) return false;
-        Board yBoard = (Board) y;
+        if (obj == null || this.getClass() != obj.getClass())
+        {
+            return false;
+        }
+        Board yBoard = (Board) obj;
         if ((this.zeroI != yBoard.zeroI) || (this.zeroJ != yBoard.zeroJ)) return false;
 
         for (int i = 0; i < n; i++)
@@ -170,5 +156,6 @@ public class Board
 
     public static void main(String[] args) // unit tests (not graded)
     {
+        System.out.println("Hi");
     }
 }
