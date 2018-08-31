@@ -43,7 +43,7 @@ public class Board
         int hammingCount = 0;
         int manhattanCount = 0;
         for (int i = 0; i < n; i++)
-        {gi
+        {
             for (int j = 0; j < n; j++)
             {
                 if (board[i][j] != 0 && board[i][j] != i * n + (j + 1))
