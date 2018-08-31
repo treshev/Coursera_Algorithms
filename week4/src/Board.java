@@ -101,8 +101,14 @@ public class Board
         {
             return false;
         }
+
         Board yBoard = (Board) obj;
-        if ((this.zeroI != yBoard.zeroI) || (this.zeroJ != yBoard.zeroJ)) return false;
+
+        if ((yBoard.board.length != this.board.length)
+                || (this.zeroI != yBoard.zeroI) || (this.zeroJ != yBoard.zeroJ))
+        {
+            return false;
+        }
 
         for (int i = 0; i < n; i++)
         {

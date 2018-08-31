@@ -38,7 +38,7 @@ public class Solver
 
     public Solver(Board initial)           // find a solution to the initial board (using the A* algorithm)
     {
-        if (initial == null || initial.dimension() < 1 || initial.dimension() > 128)
+        if (initial == null || initial.dimension() < 1)
             throw new IllegalArgumentException();
 
         MinPQ<MyBoard> pq = new MinPQ<>();
@@ -66,7 +66,7 @@ public class Solver
         }
         else
         {
-            finalNode = initialBoard;
+            finalNode = new MyBoard(initial, null, -1);
             isSolve = false;
         }
     }
@@ -95,10 +95,10 @@ public class Solver
 
     public Iterable<Board> solution()      // sequence of boards in a shortest solution; null if unsolvable
     {
-        ArrayList<Board> finalList = new ArrayList<>();
-        MyBoard current = finalNode;
         if (isSolvable())
         {
+            ArrayList<Board> finalList = new ArrayList<>();
+            MyBoard current = finalNode;
             while (current.predecessorItem != null)
             {
                 finalList.add(current.board);
@@ -106,8 +106,9 @@ public class Solver
             }
             finalList.add(current.board);
             Collections.reverse(finalList);
+            return finalList;
         }
-        return finalList;
+        return null;
     }
 
     public static void main(String[] args) // solve a slider puzzle (given below)
