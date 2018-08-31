@@ -1,0 +1,1016 @@
+See the Assessment Guide for information on how to interpret this report.
+
+ASSESSMENT SUMMARY
+
+Compilation:  PASSED
+API:          PASSED
+
+Spotbugs:     PASSED
+PMD:          PASSED
+Checkstyle:   FAILED (0 errors, 1 warning)
+
+Correctness:  46/49 tests passed
+Memory:       22/22 tests passed
+Timing:       86/125 tests passed
+
+Aggregate score: 90.09%
+[Compilation: 5%, API: 5%, Spotbugs: 0%, PMD: 0%, Checkstyle: 0%, Correctness: 60%, Memory: 10%, Timing: 20%]
+
+ASSESSMENT DETAILS
+
+The following files were submitted:
+----------------------------------
+4.7K Aug 31 13:40 Board.java
+3.4K Aug 31 13:40 Solver.java
+
+
+********************************************************************************
+*  COMPILING
+********************************************************************************
+
+
+% javac Board.java
+*-----------------------------------------------------------
+
+% javac Solver.java
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+Checking the APIs of your programs.
+*-----------------------------------------------------------
+Board:
+
+Solver:
+
+================================================================
+
+
+********************************************************************************
+*  CHECKING STYLE AND COMMON BUG PATTERNS
+********************************************************************************
+
+
+% spotbugs *.class
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+% pmd .
+*-----------------------------------------------------------
+
+
+================================================================
+
+
+% checkstyle *.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for Board.java
+*-----------------------------------------------------------
+
+% custom checkstyle checks for Solver.java
+*-----------------------------------------------------------
+[WARN] Solver.java:41:81: The numeric literal '128' appears to be unnecessary. [NumericLiteral]
+Checkstyle ends with 0 errors and 1 warning.
+
+
+================================================================
+
+
+********************************************************************************
+*  TESTING CORRECTNESS
+********************************************************************************
+
+Testing correctness of Board
+*-----------------------------------------------------------
+Running 24 total tests.
+
+Tests 5, 6, 13, and 14 rely upon toString() returning results in prescribed format.
+
+Test 1a: check hamming() with file inputs
+  * puzzle04.txt
+  * puzzle00.txt
+  * puzzle07.txt
+  * puzzle17.txt
+  * puzzle27.txt
+  * puzzle2x2-unsolvable1.txt
+==> passed
+
+Test 1b: check hamming() with random n-by-n boards
+  * 2-by-2
+  * 3-by-3
+  * 4-by-4
+  * 5-by-5
+  * 9-by-9
+  * 10-by-10
+  * 127-by-127
+==> passed
+
+Test 2a: check manhattan() with file inputs
+  * puzzle04.txt
+  * puzzle00.txt
+  * puzzle07.txt
+  * puzzle17.txt
+  * puzzle27.txt
+  * puzzle2x2-unsolvable1.txt
+==> passed
+
+Test 2b: check manhattan() with random n-by-n boards
+  * 2-by-2
+  * 3-by-3
+  * 4-by-4
+  * 5-by-5
+  * 9-by-9
+  * 10-by-10
+  * 127-by-127
+==> passed
+
+Test 3: check dimension() with random n-by-n boards
+  * 2-by-2
+  * 3-by-3
+  * 4-by-4
+  * 5-by-5
+  * 6-by-6
+==> passed
+
+Test 4a: check toString() with file inputs
+  * puzzle04.txt
+  * puzzle00.txt
+  * puzzle06.txt
+  * puzzle09.txt
+  * puzzle23.txt
+  * puzzle2x2-unsolvable1.txt
+==> passed
+
+Test 4b: check toString() with random n-by-n boards
+  * 2-by-2
+  * 3-by-3
+  * 4-by-4
+  * 5-by-5
+  * 9-by-9
+  * 10-by-10
+  * 127-by-127
+==> passed
+
+Test 5a: check neighbors() with file inputs
+  * puzzle04.txt
+  * puzzle00.txt
+  * puzzle06.txt
+  * puzzle09.txt
+  * puzzle23.txt
+  * puzzle2x2-unsolvable1.txt
+==> passed
+
+Test 5b: check neighbors() with random n-by-n boards
+  * 2-by-2
+  * 3-by-3
+  * 4-by-4
+  * 5-by-5
+  * 9-by-9
+  * 10-by-10
+  * 127-by-127
+==> passed
+
+Test 6a: check neighbors() of neigbors() with file inputs
+  * puzzle04.txt
+  * puzzle00.txt
+  * puzzle06.txt
+  * puzzle09.txt
+  * puzzle23.txt
+  * puzzle2x2-unsolvable1.txt
+==> passed
+
+Test 6b: check neighbors() of neighbors() with random n-by-n boards
+  * 2-by-2
+  * 3-by-3
+  * 4-by-4
+  * 5-by-5
+  * 9-by-9
+  * 10-by-10
+==> passed
+
+Test 7a: check twin() with file inputs
+  * puzzle04.txt
+  * puzzle00.txt
+  * puzzle06.txt
+  * puzzle09.txt
+  * puzzle23.txt
+  * puzzle2x2-unsolvable1.txt
+==> passed
+
+Test 7b: check twin() with random n-by-n boards
+  * 2-by-2
+  * 3-by-3
+  * 4-by-4
+  * 5-by-5
+  * 9-by-9
+  * 10-by-10
+==> passed
+
+Test 8a: check isGoal() with file inputs
+  * puzzle00.txt
+  * puzzle04.txt
+  * puzzle16.txt
+  * puzzle06.txt
+  * puzzle09.txt
+  * puzzle23.txt
+  * puzzle2x2-unsolvable1.txt
+  * puzzle3x3-unsolvable1.txt
+  * puzzle3x3-00.txt
+  * puzzle4x4-00.txt
+==> passed
+
+Test 8b: check isGoal() on n-by-n goal boards
+  * 2-by-2
+  * 3-by-3
+  * 4-by-4
+  * 5-by-5
+  * 6-by-6
+  * 100-by-100
+==> passed
+
+Test 9: check that two Board objects can be created at the same time
+  * random 3-by-3 and 3-by-3 boards
+  * random 4-by-4 and 4-by-4 boards
+  * random 2-by-2 and 2-by-2 boards
+  * random 3-by-3 and 4-by-4 boards
+  * random 4-by-4 and 3-by-3 boards
+==> passed
+
+Test 10a: check equals()
+  * reflexive
+  * symmetric
+  * transitive
+  * argument is null
+  * argument is of type String
+  * Board object stored in a variable of type Object
+==> passed
+
+Test 10b: check correctness of equals() on random n-by-n boards
+  * n = 2
+  * n = 3
+  * n = 4
+  * 5 <= n < 10
+==> passed
+
+Test 10c: check equals() when board sizes m and n are different
+  * m = 4, n = 5
+  * m = 2, n = 5
+  * m = 5, n = 3
+  * m = 2, n = 3
+    - failed on trial 1795 of 10000
+    - student   equals() = true
+    - reference equals() = false
+    - board1
+        2
+         0  1
+         3  2
+    - board2
+        3
+         0  1  3
+         2  8  7
+         4  5  6
+
+  * m = 3, n = 2
+    java.lang.ArrayIndexOutOfBoundsException: 4
+
+    Board.equals(Board.java:111)
+    TestBoard.checkEqualsDifferentSizeBoards(TestBoard.java:951)
+    TestBoard.test10c(TestBoard.java:1455)
+    TestBoard.main(TestBoard.java:1573)
+
+==> FAILED
+
+Test 11: check that Board is immutable by changing argument array after
+         construction and making sure Board does not mutate
+==> passed
+
+Test 12: check that Board is immutable by testing whether methods
+         return the same value, regardless of order in which called
+  * puzzle10.txt
+  * puzzle20.txt
+  * puzzle30.txt
+  * 2-by-2
+  * 3-by-3
+  * 4-by-4
+==> passed
+
+Test 13: check dimension() on a board that is kth-neighbor of a board
+  * 0th neighbor of puzzle27.txt
+  * 1st neighbor of puzzle27.txt
+  * 2nd neighbor of puzzle27.txt
+  * 13th neighbor of puzzle27.txt
+  * 13th neighbor of puzzle00.txt
+  * 13th neighbor of puzzle2x2-unsolvable1.txt
+==> passed
+
+Test 14: check hamming() on a board that is kth-neighbor of a board
+  * 0th neighbor of puzzle27.txt
+  * 1st neighbor of puzzle27.txt
+  * 2nd neighbor of puzzle27.txt
+  * 13th neighbor of puzzle27.txt
+  * 13th neighbor of puzzle00.txt
+  * 13th neighbor of puzzle2x2-unsolvable1.txt
+==> passed
+
+Test 15: check manhattan() on a board that is a kth-neighbor of a board
+  * 0th neighbor of puzzle27.txt
+  * 1st neighbor of puzzle27.txt
+  * 2nd neighbor of puzzle27.txt
+  * 13th neighbor of puzzle27.txt
+  * 13th neighbor of puzzle00.txt
+  * 13th neighbor of puzzle2x2-unsolvable1.txt
+==> passed
+
+
+Total: 23/24 tests passed!
+
+
+================================================================
+********************************************************************************
+*  MEMORY
+********************************************************************************
+
+Analyzing memory of Board
+*-----------------------------------------------------------
+Running 10 total tests.
+
+Memory usage of an n-by-n board
+[ must be at most 4n^2 + 32n + 64 bytes ]
+
+
+              n       student (bytes)    reference (bytes)
+----------------------------------------------------------
+=> passed     2            88                  128
+=> passed     3           104                  192
+=> passed     4           112                  240
+=> passed     8           208                  560
+=> passed    12           368                 1008
+=> passed    16           592                 1584
+=> passed    20           880                 2288
+=> passed    37          2824                 6856
+=> passed    72         10448                23088
+=> passed   120         28880                61488
+==> 10/10 tests passed
+
+Total: 10/10 tests passed!
+
+Student   memory = 2.00 n^2 + 0.00 n + 80.00   (R^2 = 1.000)
+Reference memory = 4.00 n^2 + 32.00 n + 48.00   (R^2 = 1.000)
+
+================================================================
+
+
+
+********************************************************************************
+*  TESTING CORRECTNESS (substituting reference Board)
+********************************************************************************
+
+Testing correctness of Solver
+*-----------------------------------------------------------
+Running 25 total tests.
+
+Test 1a: check moves() with file inputs
+  * puzzle00.txt
+  * puzzle01.txt
+  * puzzle02.txt
+  * puzzle03.txt
+  * puzzle04.txt
+  * puzzle05.txt
+  * puzzle06.txt
+  * puzzle07.txt
+  * puzzle08.txt
+  * puzzle09.txt
+  * puzzle10.txt
+  * puzzle11.txt
+  * puzzle12.txt
+  * puzzle13.txt
+==> passed
+
+Test 1b: check solution() with file inputs
+  * puzzle00.txt
+  * puzzle01.txt
+  * puzzle02.txt
+  * puzzle03.txt
+  * puzzle04.txt
+  * puzzle05.txt
+  * puzzle06.txt
+  * puzzle07.txt
+  * puzzle08.txt
+  * puzzle09.txt
+  * puzzle10.txt
+  * puzzle11.txt
+  * puzzle12.txt
+  * puzzle13.txt
+==> passed
+
+Test 2a: check moves() with more file inputs
+  * puzzle14.txt
+  * puzzle15.txt
+  * puzzle16.txt
+  * puzzle17.txt
+  * puzzle18.txt
+  * puzzle19.txt
+  * puzzle20.txt
+  * puzzle21.txt
+  * puzzle22.txt
+  * puzzle23.txt
+  * puzzle24.txt
+  * puzzle25.txt
+  * puzzle26.txt
+  * puzzle27.txt
+  * puzzle28.txt
+  * puzzle29.txt
+  * puzzle30.txt
+  * puzzle31.txt
+==> passed
+
+Test 2b: check solution() with more file inputs
+  * puzzle14.txt
+  * puzzle15.txt
+  * puzzle16.txt
+  * puzzle17.txt
+  * puzzle18.txt
+  * puzzle19.txt
+  * puzzle20.txt
+  * puzzle21.txt
+  * puzzle22.txt
+  * puzzle23.txt
+  * puzzle24.txt
+  * puzzle25.txt
+  * puzzle26.txt
+  * puzzle27.txt
+  * puzzle28.txt
+  * puzzle29.txt
+  * puzzle30.txt
+  * puzzle31.txt
+==> passed
+
+Test 3a: check moves() with random solvable n-by-n boards
+  * 1000 random 3-by-3 boards that are exactly 1 move from goal
+  * 1000 random 3-by-3 boards that are exactly 2 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 3 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 4 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 5 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 6 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 7 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 8 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 9 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 10 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 11 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 12 moves from goal
+==> passed
+
+Test 3b: check solution() with random solvable n-by-n boards
+  * 1000 random 3-by-3 boards that are exactly 1 move from goal
+  * 1000 random 3-by-3 boards that are exactly 2 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 3 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 4 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 5 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 6 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 7 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 8 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 9 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 10 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 11 moves from goal
+  * 1000 random 3-by-3 boards that are exactly 12 moves from goal
+==> passed
+
+Test 4: create two Solver objects at the same time
+  * puzzle04.txt and puzzle04.txt
+  * puzzle00.txt and puzzle04.txt
+  * puzzle04.txt and puzzle00.txt
+==> passed
+
+Test 5a: call isSolvable() with file inputs
+  * puzzle01.txt
+  * puzzle03.txt
+  * puzzle04.txt
+  * puzzle17.txt
+  * puzzle3x3-unsolvable1.txt
+  * puzzle3x3-unsolvable2.txt
+  * puzzle4x4-unsolvable.txt
+==> passed
+
+Test 5b: call isSolvable() on random n-by-n boards
+  * 100 random 2-by-2 boards
+==> passed
+
+Test 6: check moves() on unsolvable puzzles
+  * puzzle2x2-unsolvable1.txt
+    - moves() returns wrong value
+    - student   moves() = 0
+    - reference moves() = -1
+    - board =
+        2
+         1  0
+         2  3
+
+  * puzzle2x2-unsolvable2.txt
+    - moves() returns wrong value
+    - student   moves() = 0
+    - reference moves() = -1
+    - board =
+        2
+         0  1
+         2  3
+
+  * puzzle3x3-unsolvable1.txt
+    - moves() returns wrong value
+    - student   moves() = 0
+    - reference moves() = -1
+    - board =
+        3
+         1  2  3
+         4  6  5
+         7  8  0
+
+  * puzzle3x3-unsolvable2.txt
+    - moves() returns wrong value
+    - student   moves() = 0
+    - reference moves() = -1
+    - board =
+        3
+         8  6  7
+         2  5  4
+         1  3  0
+
+  * puzzle4x4-unsolvable.txt
+    - moves() returns wrong value
+    - student   moves() = 0
+    - reference moves() = -1
+    - board =
+        4
+         3  2  4  8
+         1  6  0 12
+         5 10  7 11
+         9 13 14 15
+
+==> FAILED
+
+Test 7: check solution() on unsolvable puzzles
+  * puzzle2x2-unsolvable1.txt
+    - student solution() does not return null
+
+  * puzzle2x2-unsolvable2.txt
+    - student solution() does not return null
+
+  * puzzle3x3-unsolvable1.txt
+    - student solution() does not return null
+
+  * puzzle3x3-unsolvable2.txt
+    - student solution() does not return null
+
+  * puzzle4x4-unsolvable.txt
+    - student solution() does not return null
+
+==> FAILED
+
+Test 8a: check that Solver is immutable by testing whether methods
+         return the same value, regardless of order in which called
+  * puzzle3x3-00.txt
+  * puzzle3x3-01.txt
+  * puzzle3x3-05.txt
+  * puzzle3x3-10.txt
+  * random 2-by-2 solvable boards
+==> passed
+
+Test 8b: check that Solver is immutable by testing whether methods
+         return the same value, regardless of order in which called
+  * puzzle3x3-unsolvable1.txt
+  * puzzle3x3-unsolvable2.txt
+  * puzzle4x4-unsolvable.txt
+  * random 2-by-2 unsolvable boards
+==> passed
+
+Test 9a: check that equals() method in Board is called
+  * puzzle00.txt
+  * puzzle04.txt
+  * puzzle05.txt
+  * puzzle10.txt
+==> passed
+
+Test 9b: check that equals() method in Board is called only
+         with an argument of type Board
+  * puzzle00.txt
+  * puzzle04.txt
+  * puzzle05.txt
+  * puzzle10.txt
+==> passed
+
+Test 9c: check that equals() method in Board is called only
+         with a neighbor of a neighbor as an argument
+  * puzzle00.txt
+  * puzzle04.txt
+  * puzzle05.txt
+  * puzzle10.txt
+  * puzzle27.txt
+==> passed
+
+Test 10: check that constructor throws exception if board is null
+==> passed
+
+Test 11a: check moves() with 2-by-2 file inputs
+  * puzzle2x2-00.txt
+  * puzzle2x2-01.txt
+  * puzzle2x2-02.txt
+  * puzzle2x2-03.txt
+  * puzzle2x2-04.txt
+  * puzzle2x2-05.txt
+  * puzzle2x2-06.txt
+==> passed
+
+Test 11b: check solution() with 2-by-2 file inputs
+  * puzzle2x2-00.txt
+  * puzzle2x2-01.txt
+  * puzzle2x2-02.txt
+  * puzzle2x2-03.txt
+  * puzzle2x2-04.txt
+  * puzzle2x2-05.txt
+  * puzzle2x2-06.txt
+==> passed
+
+Test 12a: check moves() with 3-by-3 file inputs
+  * puzzle3x3-00.txt
+  * puzzle3x3-01.txt
+  * puzzle3x3-02.txt
+  * puzzle3x3-03.txt
+  * puzzle3x3-04.txt
+  * puzzle3x3-05.txt
+  * puzzle3x3-06.txt
+  * puzzle3x3-07.txt
+  * puzzle3x3-08.txt
+  * puzzle3x3-09.txt
+  * puzzle3x3-10.txt
+  * puzzle3x3-11.txt
+  * puzzle3x3-12.txt
+  * puzzle3x3-13.txt
+  * puzzle3x3-14.txt
+  * puzzle3x3-15.txt
+  * puzzle3x3-16.txt
+  * puzzle3x3-17.txt
+  * puzzle3x3-18.txt
+  * puzzle3x3-19.txt
+  * puzzle3x3-20.txt
+  * puzzle3x3-21.txt
+  * puzzle3x3-22.txt
+  * puzzle3x3-23.txt
+  * puzzle3x3-24.txt
+  * puzzle3x3-25.txt
+  * puzzle3x3-26.txt
+  * puzzle3x3-27.txt
+  * puzzle3x3-28.txt
+  * puzzle3x3-29.txt
+  * puzzle3x3-30.txt
+==> passed
+
+Test 12b: check solution() with 3-by-3 file inputs
+  * puzzle3x3-00.txt
+  * puzzle3x3-01.txt
+  * puzzle3x3-02.txt
+  * puzzle3x3-03.txt
+  * puzzle3x3-04.txt
+  * puzzle3x3-05.txt
+  * puzzle3x3-06.txt
+  * puzzle3x3-07.txt
+  * puzzle3x3-08.txt
+  * puzzle3x3-09.txt
+  * puzzle3x3-10.txt
+  * puzzle3x3-11.txt
+  * puzzle3x3-12.txt
+  * puzzle3x3-13.txt
+  * puzzle3x3-14.txt
+  * puzzle3x3-15.txt
+  * puzzle3x3-16.txt
+  * puzzle3x3-17.txt
+  * puzzle3x3-18.txt
+  * puzzle3x3-19.txt
+  * puzzle3x3-20.txt
+  * puzzle3x3-21.txt
+  * puzzle3x3-22.txt
+  * puzzle3x3-23.txt
+  * puzzle3x3-24.txt
+  * puzzle3x3-25.txt
+  * puzzle3x3-26.txt
+  * puzzle3x3-27.txt
+  * puzzle3x3-28.txt
+  * puzzle3x3-29.txt
+  * puzzle3x3-30.txt
+==> passed
+
+Test 13a: check moves() with 4-by-4 file inputs
+  * puzzle4x4-00.txt
+  * puzzle4x4-01.txt
+  * puzzle4x4-02.txt
+  * puzzle4x4-03.txt
+  * puzzle4x4-04.txt
+  * puzzle4x4-05.txt
+  * puzzle4x4-06.txt
+  * puzzle4x4-07.txt
+  * puzzle4x4-08.txt
+  * puzzle4x4-09.txt
+  * puzzle4x4-10.txt
+  * puzzle4x4-11.txt
+  * puzzle4x4-12.txt
+  * puzzle4x4-13.txt
+  * puzzle4x4-14.txt
+  * puzzle4x4-15.txt
+  * puzzle4x4-16.txt
+  * puzzle4x4-17.txt
+  * puzzle4x4-18.txt
+  * puzzle4x4-19.txt
+  * puzzle4x4-20.txt
+  * puzzle4x4-21.txt
+  * puzzle4x4-22.txt
+  * puzzle4x4-23.txt
+  * puzzle4x4-24.txt
+  * puzzle4x4-25.txt
+  * puzzle4x4-26.txt
+  * puzzle4x4-27.txt
+  * puzzle4x4-28.txt
+  * puzzle4x4-29.txt
+  * puzzle4x4-30.txt
+==> passed
+
+Test 13b: check solution() with 4-by-4 file inputs
+  * puzzle4x4-00.txt
+  * puzzle4x4-01.txt
+  * puzzle4x4-02.txt
+  * puzzle4x4-03.txt
+  * puzzle4x4-04.txt
+  * puzzle4x4-05.txt
+  * puzzle4x4-06.txt
+  * puzzle4x4-07.txt
+  * puzzle4x4-08.txt
+  * puzzle4x4-09.txt
+  * puzzle4x4-10.txt
+  * puzzle4x4-11.txt
+  * puzzle4x4-12.txt
+  * puzzle4x4-13.txt
+  * puzzle4x4-14.txt
+  * puzzle4x4-15.txt
+  * puzzle4x4-16.txt
+  * puzzle4x4-17.txt
+  * puzzle4x4-18.txt
+  * puzzle4x4-19.txt
+  * puzzle4x4-20.txt
+  * puzzle4x4-21.txt
+  * puzzle4x4-22.txt
+  * puzzle4x4-23.txt
+  * puzzle4x4-24.txt
+  * puzzle4x4-25.txt
+  * puzzle4x4-26.txt
+  * puzzle4x4-27.txt
+  * puzzle4x4-28.txt
+  * puzzle4x4-29.txt
+  * puzzle4x4-30.txt
+==> passed
+
+Test 14a: check moves() with random solvable n-by-n boards
+  * 100 random 2-by-2 boards that are <= 6 moves from goal
+  * 200 random 3-by-3 boards that are <= 20 moves from goal
+  * 200 random 4-by-4 boards that are <= 20 moves from goal
+  * 200 random 5-by-5 boards that are <= 20 moves from goal
+==> passed
+
+Test 14b: check solution() with random solvable n-by-n boards
+  * 100 random 2-by-2 boards that are <= 6 moves from goal
+  * 200 random 3-by-3 boards that are <= 20 moves from goal
+  * 200 random 4-by-4 boards that are <= 20 moves from goal
+  * 200 random 5-by-5 boards that are <= 20 moves from goal
+==> passed
+
+
+Total: 23/25 tests passed!
+
+
+================================================================
+********************************************************************************
+*  MEMORY (substituting reference Board)
+********************************************************************************
+
+Analyzing memory of Solver
+*-----------------------------------------------------------
+Running 12 total tests.
+
+Maximum allowed time per puzzle is 5.0 seconds.
+Maximum allowed memory per puzzle = 200000000 bytes.
+
+Test 1: Measure memory of Solver.
+
+               filename   moves   memory
+---------------------------------------------
+=> passed  puzzle10.txt      10     4696
+=> passed  puzzle15.txt      15     5664
+=> passed  puzzle20.txt      20     2888
+=> passed  puzzle25.txt      25     3568
+=> passed  puzzle30.txt      30     4248
+=> passed  puzzle35.txt      35     5792
+==> 6/6 tests passed
+
+
+
+Test 2: Measure memory of MinPQ.
+
+                              deep              max           ending
+               filename     memory             size             size
+--------------------------------------------------------------------
+=> passed  puzzle10.txt      22688               33               32
+=> passed  puzzle15.txt      28800               51               50
+=> passed  puzzle20.txt     156000              445              444
+=> passed  puzzle25.txt    1094240             3145             3144
+=> passed  puzzle30.txt    4753200            13283            13282
+=> passed  puzzle35.txt   38833560           119290           119289
+==> 6/6 tests passed
+
+
+Total: 12/12 tests passed!
+
+================================================================
+
+
+
+********************************************************************************
+*  TIMING (substituting reference Board)
+********************************************************************************
+
+Timing Solver
+*-----------------------------------------------------------
+Running 125 total tests.
+
+Maximum allowed time per puzzle is 5.0 seconds.
+
+Test 1: Measure CPU time and check correctness
+
+               filename   moves    n  seconds
+---------------------------------------------
+=> passed  puzzle20.txt      20    3     0.02
+=> passed  puzzle22.txt      22    3     0.01
+=> passed  puzzle21.txt      21    3     0.01
+=> passed  puzzle23.txt      23    3     0.01
+=> passed  puzzle24.txt      24    3     0.01
+=> passed  puzzle25.txt      25    3     0.02
+=> passed  puzzle27.txt      27    3     0.01
+=> passed  puzzle29.txt      29    3     0.02
+=> passed  puzzle26.txt      26    3     0.01
+=> passed  puzzle28.txt      28    3     0.03
+=> passed  puzzle30.txt      30    3     0.05
+=> passed  puzzle31.txt      31    3     0.06
+=> passed  puzzle39.txt      39    4     0.06
+=> passed  puzzle41.txt      41    5     0.04
+=> passed  puzzle34.txt      34    4     0.22
+=> passed  puzzle37.txt      37    4     0.09
+=> passed  puzzle44.txt      44    5     0.25
+=> passed  puzzle32.txt      32    4     0.44
+=> passed  puzzle35.txt      35    4     0.21
+=> passed  puzzle33.txt      33    4     0.41
+=> passed  puzzle43.txt      43    4     0.62
+=> passed  puzzle46.txt      46    4     0.59
+=> passed  puzzle40.txt      40    4     0.29
+=> passed  puzzle36.txt      36    4     2.48
+=> passed  puzzle45.txt      45    4     0.95
+==> 25/25 tests passed
+
+
+
+Test 2: Count MinPQ operations
+
+               filename   insert()         delMin()
+---------------------------------------------------
+=> passed  puzzle20.txt       1118              674
+=> passed  puzzle22.txt       3008             1776
+=> passed  puzzle21.txt       1978             1174
+=> passed  puzzle23.txt       4384             2608
+=> passed  puzzle24.txt       2266             1378
+=> passed  puzzle25.txt       7806             4662
+=> passed  puzzle27.txt       5972             3646
+=> passed  puzzle29.txt      10955             6686
+=> passed  puzzle26.txt       5647             3414
+=> passed  puzzle28.txt      15595             9498
+=> passed  puzzle30.txt      33988            20706
+=> passed  puzzle31.txt      40609            24844
+=> passed  puzzle39.txt      40733            20104
+=> passed  puzzle41.txt      28333            12166
+=> passed  puzzle34.txt     149056            71582
+=> passed  puzzle37.txt      63349            30360
+=> passed  puzzle44.txt     151281            68060
+=> passed  puzzle32.txt     400721           191824
+=> passed  puzzle35.txt     236207           116918
+=> passed  puzzle33.txt     461512           221840
+=> passed  puzzle43.txt     648654           319146
+=> passed  puzzle46.txt     599099           299782
+=> passed  puzzle40.txt     315112           155066
+=> passed  puzzle36.txt    1987598           966996
+=> passed  puzzle45.txt     929744           459268
+==> 25/25 tests passed
+
+
+
+Test 3: Count Board operations (that should not get called)
+
+               filename    hamming()   toString()
+-------------------------------------------------
+=> passed  puzzle20.txt            0            0
+=> passed  puzzle22.txt            0            0
+=> passed  puzzle21.txt            0            0
+=> passed  puzzle23.txt            0            0
+=> passed  puzzle24.txt            0            0
+=> passed  puzzle25.txt            0            0
+=> passed  puzzle27.txt            0            0
+=> passed  puzzle29.txt            0            0
+=> passed  puzzle26.txt            0            0
+=> passed  puzzle28.txt            0            0
+=> passed  puzzle30.txt            0            0
+=> passed  puzzle31.txt            0            0
+=> passed  puzzle39.txt            0            0
+=> passed  puzzle41.txt            0            0
+=> passed  puzzle34.txt            0            0
+=> passed  puzzle37.txt            0            0
+=> passed  puzzle44.txt            0            0
+=> passed  puzzle32.txt            0            0
+=> passed  puzzle35.txt            0            0
+=> passed  puzzle33.txt            0            0
+=> passed  puzzle43.txt            0            0
+=> passed  puzzle46.txt            0            0
+=> passed  puzzle40.txt            0            0
+=> passed  puzzle36.txt            0            0
+=> passed  puzzle45.txt            0            0
+==> 25/25 tests passed
+
+
+
+Test 4a: Count Board operations (that should get called)
+
+               filename    Board()            equals()         manhattan()
+--------------------------------------------------------------------------
+=> FAILED  puzzle20.txt       1788                1778               43382   (1.2x)
+=> FAILED  puzzle22.txt       4780                4774              140436   (1.4x)
+=> passed  puzzle21.txt       3148                3140               84690
+=> FAILED  puzzle23.txt       6988                6980              219388   (1.4x)
+=> passed  puzzle24.txt       3640                3630              104350
+=> FAILED  puzzle25.txt      12464               12456              437334   (1.3x)
+=> passed  puzzle27.txt       9614                9606              334718
+=> FAILED  puzzle29.txt      17637               17629              680022   (1.7x)
+=> passed  puzzle26.txt       9057                9051              308890
+=> passed  puzzle28.txt      25089               25079             1018170
+=> FAILED  puzzle30.txt      54690               54684             2422910   (1.4x)
+=> FAILED  puzzle31.txt      65449               65441             2985028   (1.7x)
+=> FAILED  puzzle39.txt      60833               60825             2606036   (1.1x)
+=> passed  puzzle41.txt      40495               40485             1520898
+=> FAILED  puzzle34.txt     220634              220628            10305550   (1.7x)
+=> passed  puzzle37.txt      93705               93697             4095516
+=> passed  puzzle44.txt     219337              219327            10227436
+=> FAILED  puzzle32.txt     592541              592531            29932544   (1.3x)
+=> passed  puzzle35.txt     353121              353111            17835742
+=> FAILED  puzzle33.txt     683348              683340            35096736   (1.3x)
+=> FAILED  puzzle43.txt     967796              967788            55351182   (1.2x)
+=> FAILED  puzzle46.txt     898877              898869            51216718   (1.1x)
+=> passed  puzzle40.txt     470174              470168            24677622
+=> FAILED  puzzle36.txt    2954590             2954580           177561584   (1.7x)
+=> passed  puzzle45.txt    1389008             1389000            81986608
+==> 11/25 tests passed
+
+
+
+Test 4b: count Board operations (that should get called),
+         rejecting if doesn't adhere to stricter caching limits
+
+               filename    Board()            equals()         manhattan()
+--------------------------------------------------------------------------
+=> FAILED  puzzle20.txt       1788                1778               43382  (10.8x)
+=> FAILED  puzzle22.txt       4780                4774              140436  (14.5x)
+=> FAILED  puzzle21.txt       3148                3140               84690   (8.6x)
+=> FAILED  puzzle23.txt       6988                6980              219388  (14.8x)
+=> FAILED  puzzle24.txt       3640                3630              104350   (6.9x)
+=> FAILED  puzzle25.txt      12464               12456              437334  (15.2x)
+=> FAILED  puzzle27.txt       9614                9606              334718  (10.7x)
+=> FAILED  puzzle29.txt      17637               17629              680022  (20.8x)
+=> FAILED  puzzle26.txt       9057                9051              308890   (9.3x)
+=> FAILED  puzzle28.txt      25089               25079             1018170  (13.5x)
+=> FAILED  puzzle30.txt      54690               54684             2422910  (20.0x)
+=> FAILED  puzzle31.txt      65449               65441             2985028  (23.1x)
+=> FAILED  puzzle39.txt      60833               60825             2606036  (14.0x)
+=> FAILED  puzzle41.txt      40495               40485             1520898   (5.2x)
+=> FAILED  puzzle34.txt     220634              220628            10305550  (26.2x)
+=> FAILED  puzzle37.txt      93705               93697             4095516   (9.5x)
+=> FAILED  puzzle44.txt     219337              219327            10227436  (14.7x)
+=> FAILED  puzzle32.txt     592541              592531            29932544  (22.2x)
+=> FAILED  puzzle35.txt     353121              353111            17835742  (13.0x)
+=> FAILED  puzzle33.txt     683348              683340            35096736  (21.8x)
+=> FAILED  puzzle43.txt     967796              967788            55351182  (20.2x)
+=> FAILED  puzzle46.txt     898877              898869            51216718  (18.9x)
+=> FAILED  puzzle40.txt     470174              470168            24677622   (8.5x)
+=> FAILED  puzzle36.txt    2954590             2954580           177561584  (32.8x)
+=> FAILED  puzzle45.txt    1389008             1389000            81986608  (13.0x)
+==> 0/25 tests passed
+
+
+Total: 86/125 tests passed!
+
+
+================================================================

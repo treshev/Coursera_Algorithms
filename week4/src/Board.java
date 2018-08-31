@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Board
 {
-    private final int[][] board;
+    private final char[] board;
     private ArrayList<Board> neighborsList;
     private int zeroI;
     private int zeroJ;
@@ -13,22 +13,39 @@ public class Board
     public Board(int[][] blocks)
     {
         n = blocks.length;
-        int[][] newBoardArray = new int[n][n];
+        int hammingCount = 0;
+        int manhattanCount = 0;
+
+        char[] newBoardArray = new char[n * n];
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)
             {
-                newBoardArray[i][j] = blocks[i][j];
                 if (blocks[i][j] == 0)
                 {
                     zeroI = i;
                     zeroJ = j;
                 }
+                else if (blocks[i][j] != i * n + (j + 1))
+                {
+                    hammingCount++;
+
+                    int x = blocks[i][j];
+                    int si = (x - 1) / n;
+                    int sj = abs(x - si * n - 1);
+                    manhattanCount += abs(i - si) + abs(j - sj);
+                }
+                newBoardArray[n * i + j] = (char) blocks[i][j];
             }
         }
         this.board = newBoardArray;
-        this.hamming = culculateHamming();
-        this.manhattan = culculateManhattan();
+        this.hamming = hammingCount;
+        this.manhattan = manhattanCount;
+    }
+
+    private int abs(int a)
+    {
+        return (a < 0) ? -a : a;
     }
 
     public int dimension()                 // board dimension n
@@ -36,49 +53,9 @@ public class Board
         return this.n;
     }
 
-    private int culculateHamming()
-    {
-        int count = 0;
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (board[i][j] != 0 && board[i][j] != i * n + (j + 1))
-                {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
     public int hamming()                   // number of blocks out of place
     {
         return this.hamming;
-    }
-
-    private int culculateManhattan()                 // sum of Manhattan distances between blocks and goal
-    {
-        int res = 0;
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (board[i][j] != 0 && board[i][j] != i * n + (j + 1))
-                {
-                    int x = board[i][j];
-                    int si = (x - 1) / n;
-                    int sj = abs(x - si * n - 1);
-                    res += abs(i - si) + abs(j - sj);
-                }
-            }
-        }
-        return res;
-    }
-
-    public int abs(int a)
-    {
-        return (a < 0) ? -a : a;
     }
 
     public int manhattan()                 // sum of Manhattan distances between blocks and goal
@@ -97,7 +74,10 @@ public class Board
         int[][] newBoardArray = new int[n][n];
         for (int i = 0; i < n; i++)
         {
-            System.arraycopy(this.board[i], 0, newBoardArray[i], 0, n);
+            for (int j = 0; j < n; j++)
+            {
+                newBoardArray[i][j] = (int) board[n * i + j];
+            }
         }
 
         if (newBoardArray[0][0] != 0 && newBoardArray[0][1] != 0)
@@ -115,17 +95,20 @@ public class Board
         return new Board(newBoardArray);
     }
 
-    public boolean equals(Object y)        // does this board equal y?
+    public boolean equals(Object obj)        // does this board equal y?
     {
-        if (y.getClass() != Board.class) return false;
-        Board yBoard = (Board) y;
+        if (obj == null || this.getClass() != obj.getClass())
+        {
+            return false;
+        }
+        Board yBoard = (Board) obj;
         if ((this.zeroI != yBoard.zeroI) || (this.zeroJ != yBoard.zeroJ)) return false;
 
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)
             {
-                if (board[i][j] != yBoard.board[i][j])
+                if (board[n * i + j] != yBoard.board[n * i + j])
                 {
                     return false;
                 }
@@ -152,7 +135,10 @@ public class Board
         int[][] newBoardArray = new int[n][n];
         for (int i = 0; i < n; i++)
         {
-            newBoardArray[i] = this.board[i].clone();
+            for (int j = 0; j < n; j++)
+            {
+                newBoardArray[i][j] = (int) board[n * i + j];
+            }
         }
         newBoardArray[oldi][oldj] = newBoardArray[newi][newj];
         newBoardArray[newi][newj] = 0;
@@ -167,7 +153,7 @@ public class Board
         {
             for (int j = 0; j < n; j++)
             {
-                sb.append(String.format("%2d ", board[i][j]));
+                sb.append(String.format("%2d ", (int) board[n * i + j]));
             }
             sb.append("\n");
         }
@@ -176,5 +162,6 @@ public class Board
 
     public static void main(String[] args) // unit tests (not graded)
     {
+        System.out.println("Hi");
     }
 }
