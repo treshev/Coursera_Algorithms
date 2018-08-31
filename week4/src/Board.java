@@ -27,8 +27,9 @@ public class Board
             }
         }
         this.board = newBoardArray;
-        this.hamming = culculateHamming();
-        this.manhattan = culculateManhattan();
+        int[] res = culculateHammingAndManhattan();
+        this.hamming = res[0];
+        this.manhattan = res[1];
     }
 
     public int dimension()                 // board dimension n
@@ -36,44 +37,37 @@ public class Board
         return this.n;
     }
 
-    private int culculateHamming()
+    private int[] culculateHammingAndManhattan()
     {
-        int count = 0;
+        int[] result = new int[2];
+        int hammingCount = 0;
+        int manhattanCount = 0;
         for (int i = 0; i < n; i++)
-        {
+        {gi
             for (int j = 0; j < n; j++)
             {
                 if (board[i][j] != 0 && board[i][j] != i * n + (j + 1))
                 {
-                    count++;
+                    hammingCount++;
                 }
-            }
-        }
-        return count;
-    }
 
-    public int hamming()                   // number of blocks out of place
-    {
-        return this.hamming;
-    }
-
-    private int culculateManhattan()                 // sum of Manhattan distances between blocks and goal
-    {
-        int res = 0;
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
                 if (board[i][j] != 0 && board[i][j] != i * n + (j + 1))
                 {
                     int x = board[i][j];
                     int si = (x - 1) / n;
                     int sj = abs(x - si * n - 1);
-                    res += abs(i - si) + abs(j - sj);
+                    manhattanCount += abs(i - si) + abs(j - sj);
                 }
             }
         }
-        return res;
+        result[0] = hammingCount;
+        result[1] = manhattanCount;
+        return result;
+    }
+
+    public int hamming()                   // number of blocks out of place
+    {
+        return this.hamming;
     }
 
     public int abs(int a)
