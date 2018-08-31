@@ -59,6 +59,8 @@ public class PuzzleChecker
         System.out.println("Working Directory = " +
                 System.getProperty("user.dir"));
 
+
+        long globalStart = new Date().getTime();
         if (args.length == 0)
         {
             for (String filename : listFilesForFolder(new File("week4\\test\\done")))
@@ -106,5 +108,7 @@ public class PuzzleChecker
 
             }
         }
+        long current = new Date().getTime();
+        System.out.println("\nGLOBAL TIME = " + (current - globalStart) / 1000 + "sec. (" + (current - globalStart) + ")");
     }
 }
