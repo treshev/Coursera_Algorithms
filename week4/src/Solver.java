@@ -8,7 +8,7 @@ public class Solver
     private final MyBoard finalNode;
     private boolean isSolve = true;
 
-    static class MyBoard implements Comparable
+    private static class MyBoard implements Comparable<MyBoard>
     {
         private final Board board;
         private final MyBoard predecessorItem;
@@ -23,11 +23,10 @@ public class Solver
         }
 
         @Override
-        public int compareTo(Object obj)
+        public int compareTo(MyBoard object)
         {
-            if (this == obj) return 0;
+            if (this == object) return 0;
 
-            MyBoard object = (MyBoard) obj;
             if (this.board.manhattan() + this.iter == object.board.manhattan() + object.iter)
             {
                 return Integer.compare(this.board.manhattan(), object.board.manhattan());

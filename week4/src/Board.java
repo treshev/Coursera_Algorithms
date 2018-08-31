@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Board
 {
-    private final char[][] board;
+    private final char[] board;
     private ArrayList<Board> neighborsList;
     private int zeroI;
     private int zeroJ;
@@ -16,7 +16,7 @@ public class Board
         int hammingCount = 0;
         int manhattanCount = 0;
 
-        char[][] newBoardArray = new char[n][n];
+        char[] newBoardArray = new char[n * n];
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)
@@ -35,12 +35,17 @@ public class Board
                     int sj = abs(x - si * n - 1);
                     manhattanCount += abs(i - si) + abs(j - sj);
                 }
-                newBoardArray[i][j] = (char) blocks[i][j];
+                newBoardArray[n * i + j] = (char) blocks[i][j];
             }
         }
         this.board = newBoardArray;
         this.hamming = hammingCount;
         this.manhattan = manhattanCount;
+    }
+
+    private int abs(int a)
+    {
+        return (a < 0) ? -a : a;
     }
 
     public int dimension()                 // board dimension n
@@ -51,11 +56,6 @@ public class Board
     public int hamming()                   // number of blocks out of place
     {
         return this.hamming;
-    }
-
-    public int abs(int a)
-    {
-        return (a < 0) ? -a : a;
     }
 
     public int manhattan()                 // sum of Manhattan distances between blocks and goal
@@ -76,7 +76,7 @@ public class Board
         {
             for (int j = 0; j < n; j++)
             {
-                newBoardArray[i][j] = (int) board[i][j];
+                newBoardArray[i][j] = (int) board[n * i + j];
             }
         }
 
@@ -108,7 +108,7 @@ public class Board
         {
             for (int j = 0; j < n; j++)
             {
-                if (board[i][j] != yBoard.board[i][j])
+                if (board[n * i + j] != yBoard.board[n * i + j])
                 {
                     return false;
                 }
@@ -137,7 +137,7 @@ public class Board
         {
             for (int j = 0; j < n; j++)
             {
-                newBoardArray[i][j] = (int) board[i][j];
+                newBoardArray[i][j] = (int) board[n * i + j];
             }
         }
         newBoardArray[oldi][oldj] = newBoardArray[newi][newj];
@@ -153,7 +153,7 @@ public class Board
         {
             for (int j = 0; j < n; j++)
             {
-                sb.append(String.format("%2d ", (int) board[i][j]));
+                sb.append(String.format("%2d ", (int) board[n * i + j]));
             }
             sb.append("\n");
         }
