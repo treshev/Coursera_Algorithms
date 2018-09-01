@@ -30,6 +30,7 @@ import edu.princeton.cs.algs4.StdOut;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PuzzleChecker
@@ -58,53 +59,60 @@ public class PuzzleChecker
         System.out.println("Working Directory = " +
                 System.getProperty("user.dir"));
 
-        if (args.length == 0)
+        long globalStart = new Date().getTime();
+        for (int iter = 0; iter < 1; iter++)
         {
-            for (String filename : listFilesForFolder(new File("test")))
+            if (args.length == 0)
             {
-                // read in the board specified in the filename
-                System.out.println(filename);
-                In in = new In(filename);
-                int n = in.readInt();
-                int[][] tiles = new int[n][n];
-                for (int i = 0; i < n; i++)
+                for (String filename : listFilesForFolder(new File("week4\\test\\done")))
                 {
-                    for (int j = 0; j < n; j++)
+                    // read in the board specified in the filename
+                    In in = new In(filename);
+                    int n = in.readInt();
+                    int[][] tiles = new int[n][n];
+                    for (int i = 0; i < n; i++)
                     {
-                        tiles[i][j] = in.readInt();
+                        for (int j = 0; j < n; j++)
+                        {
+                            tiles[i][j] = in.readInt();
+                        }
                     }
+                    long start = new Date().getTime();
+                    // solve the slider puzzle
+                    System.out.print(filename);
+                    Board initial = new Board(tiles);
+                    Solver solver = new Solver(initial);
+                    StdOut.println(": " + solver.moves() + " : " + (new Date().getTime() - start));
                 }
-
-                // solve the slider puzzle
-                Board initial = new Board(tiles);
-                Solver solver = new Solver(initial);
-//                StdOut.println(filename + ": " + solver.moves());
-                System.out.println(filename + ": " + solver.moves());
             }
-        }
-        else
-        {
-            // for each command-line argument
-            for (String filename : args)
+            else
             {
-
-                // read in the board specified in the filename
-                In in = new In(filename);
-                int n = in.readInt();
-                int[][] tiles = new int[n][n];
-                for (int i = 0; i < n; i++)
+                // for each command-line argument
+                for (String filename : args)
                 {
-                    for (int j = 0; j < n; j++)
-                    {
-                        tiles[i][j] = in.readInt();
-                    }
-                }
 
-                // solve the slider puzzle
-                Board initial = new Board(tiles);
-                Solver solver = new Solver(initial);
-                StdOut.println(filename + ": " + solver.moves());
+                    // read in the board specified in the filename
+                    In in = new In(filename);
+                    int n = in.readInt();
+                    int[][] tiles = new int[n][n];
+                    for (int i = 0; i < n; i++)
+                    {
+                        for (int j = 0; j < n; j++)
+                        {
+                            tiles[i][j] = in.readInt();
+                        }
+                    }
+
+                    Board initial = new Board(tiles);
+                    Solver solver = new Solver(initial);
+                    StdOut.println(filename + ": " + solver.moves());
+
+                }
             }
+            long current = new Date().getTime();
+            System.out.println("\nGLOBAL TIME = " + (current - globalStart) / 1000 + "sec. (" + (current - globalStart) + ")");
         }
+        long current = new Date().getTime();
+        System.out.println("\nGLOBAL TIME = " + (current - globalStart) / 1000 + "sec. (" + (current - globalStart) + ")");
     }
 }

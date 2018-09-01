@@ -12,7 +12,7 @@ public class Client
 
         // create initial board from file
 //        In in = new In(args[0]);
-        String fileName = "test/puzzle3x3-20.txt";
+        String fileName = "week4/test/notDone/puzzle4x4-45.txt";
         In in = new In(fileName);
         int n = in.readInt();
         int[][] blocks = new int[n][n];
@@ -20,13 +20,16 @@ public class Client
             for (int j = 0; j < n; j++)
                 blocks[i][j] = in.readInt();
         Board initial = new Board(blocks);
-        System.out.println("INITIAL");
+
+        System.out.println(fileName);
         System.out.println(initial);
         System.out.println();
+
         // solve the puzzle
         Date start = new Date();
+
         Solver solver = new Solver(initial);
-        System.out.println("Spend = " + (new Date().getTime()-start.getTime())/1000);
+
         // print solution to standard output
         if (!solver.isSolvable())
             StdOut.println("No solution possible");
@@ -34,9 +37,9 @@ public class Client
         {
             StdOut.println("Minimum number of moves = " + solver.moves());
             for (Board board : solver.solution()) {
-//                StdOut.print(board);
+                StdOut.println(board);
             }
-
         }
+        System.out.println("Spend = " + (new Date().getTime()-start.getTime())/1000);
     }
 }

@@ -1,116 +1,118 @@
 import edu.princeton.cs.algs4.MinPQ;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 
 public class Solver
 {
-    private int moves;
-    private ArrayList<Board> output = new ArrayList<>();
-    private MinPQ<MyBoard> pq;
+    private final MyBoard finalNode;
+    private boolean isSolve = true;
 
-    class MyBoard implements Comparable
+    private static class MyBoard implements Comparable<MyBoard>
     {
-        private final Board b;
+        private final Board board;
+        private final MyBoard predecessorItem;
         private final int iter;
 
 
-        public MyBoard(Board board, int iteration)
+        public MyBoard(Board current, MyBoard predecessor, int iteration)
         {
-            b = board;
+            board = current;
+            predecessorItem = predecessor;
             iter = iteration;
         }
 
         @Override
-        public int compareTo(Object obj) {
-            MyBoard object = (MyBoard)obj;
-//            System.out.println("=========");
-//            System.out.print(this.b);
-//            System.out.println("This iter = " + this.iter);
-//            System.out.println("This b.hamming() = " + this.b.hamming());
-//            System.out.println("DIFF");
-//            System.out.print(object.b);
-//            System.out.println("This iter = " + object.iter);
-//            System.out.println("This b.hamming() = " + object.b.hamming());
-//            System.out.println();
-//            System.out.println("RESULT = " + Integer.compare(this.b.hamming()+this.iter, object.b.hamming()+object.iter));
-//            System.out.println("=========");
-            return Integer.compare(this.b.hamming()+this.iter, object.b.hamming()+object.iter);
+        public int compareTo(MyBoard object)
+        {
+            if (this == object) return 0;
+
+            if (this.board.manhattan() + this.iter == object.board.manhattan() + object.iter)
+            {
+                return Integer.compare(this.board.manhattan(), object.board.manhattan());
+            }
+            return Integer.compare(this.board.manhattan() + this.iter,
+                    object.board.manhattan() + object.iter);
         }
     }
 
     public Solver(Board initial)           // find a solution to the initial board (using the A* algorithm)
     {
-        if (initial == null || initial.dimension() < 1 || initial.dimension() > 128)
+        if (initial == null || initial.dimension() < 1)
             throw new IllegalArgumentException();
-        long dateIncert = 0;
-        long dateGetMin = 0;
-        long dateGoal = 0;
-        long dateNeig = 0;
 
+        MinPQ<MyBoard> pq = new MinPQ<>();
+        MyBoard initialBoard = new MyBoard(initial, null, 0);
+        pq.insert(initialBoard);
 
-        moves = 0;
-        pq = new MinPQ<>();
-        pq.insert(new MyBoard(initial, 0));
+        MinPQ<MyBoard> pqTwin = new MinPQ<>();
+        pqTwin.insert(new MyBoard(initial.twin(), null, 0));
 
         MyBoard current = pq.delMin();
-        output.add(current.b);
+        MyBoard twin = pqTwin.delMin();
 
-        long startGoal = new Date().getTime();
-        long gStart = new Date().getTime();
-        while (!current.b.isGoal())
+        while (!current.board.isGoal() && !twin.board.isGoal())
         {
-            dateGoal+=new Date().getTime()-startGoal;
-            long dateN = new Date().getTime();
-            Iterable<Board> neig = current.b.neighbors();
-            dateNeig += new Date().getTime() - dateN;
-            for (Board board : neig)
-            {
-                long start = new Date().getTime();
-                pq.insert(new MyBoard(board, current.iter+1));
-                dateIncert += new Date().getTime()-start;
-            }
-            long startd = new Date().getTime();
+            setNeighbors(pq, current);
             current = pq.delMin();
-            dateGetMin += new Date().getTime()-startd;
-//            System.out.println("MIN");
-//            System.out.print(current.b);
-//            System.out.println("hamming:" +current.b.hamming() + " iter:" + current.iter + " SUM: "+(current.b.hamming()+current.iter));
-//            System.out.println("---");
-//            output.add(current.b);
-            startGoal = new Date().getTime();
+
+            setNeighbors(pqTwin, twin);
+            twin = pqTwin.delMin();
         }
-        moves = current.iter;
-        System.out.println("Insert = " + dateIncert);
-        System.out.println("Delete = " + dateGetMin);
-        System.out.println("isGoal = " + dateGoal);
-        System.out.println("Naigbors = " + dateNeig);
-        System.out.println("While = " + (new Date().getTime()-gStart));
 
+        if (current.board.isGoal())
+        {
+            finalNode = current;
+        }
+        else
+        {
+            finalNode = new MyBoard(initial, null, -1);
+            isSolve = false;
+        }
+    }
 
+    private void setNeighbors(MinPQ<MyBoard> pq, MyBoard current)
+    {
+        Iterable<Board> neig = current.board.neighbors();
+        for (Board board : neig)
+        {
+            if (current.predecessorItem == null || !board.equals(current.predecessorItem.board))
+            {
+                pq.insert(new MyBoard(board, current, current.iter + 1));
+            }
+        }
     }
 
     public boolean isSolvable()            // is the initial board solvable?
     {
-        return true;
+        return isSolve;
     }
 
     public int moves()                     // min number of moves to solve initial board; -1 if unsolvable
     {
-        return moves;
+        return finalNode.iter;
     }
 
     public Iterable<Board> solution()      // sequence of boards in a shortest solution; null if unsolvable
     {
         if (isSolvable())
         {
-            return output;
+            ArrayList<Board> finalList = new ArrayList<>();
+            MyBoard current = finalNode;
+            while (current.predecessorItem != null)
+            {
+                finalList.add(current.board);
+                current = current.predecessorItem;
+            }
+            finalList.add(current.board);
+            Collections.reverse(finalList);
+            return finalList;
         }
         return null;
     }
 
     public static void main(String[] args) // solve a slider puzzle (given below)
     {
-
+        System.out.println("Empty");
     }
 }

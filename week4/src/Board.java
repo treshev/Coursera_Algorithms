@@ -1,89 +1,120 @@
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import static java.lang.Math.abs;
 
 public class Board
 {
-    private final int[][] board;
+    private final char[] board;
     private ArrayList<Board> neighborsList;
+    private int zeroI;
+    private int zeroJ;
+    private final int hamming;
+    private final int manhattan;
+    private final int n;
 
-    public Board(int[][] blocks)           // construct a board from an n-by-n array of blocks
-    // (where blocks[i][j] = block in row i, column j)
+    public Board(int[][] blocks)
     {
-        int n = blocks.length;
-        int[][] newBoardArray = new int[n][n];
+        n = blocks.length;
+        int hammingCount = 0;
+        int manhattanCount = 0;
+
+        char[] newBoardArray = new char[n * n];
         for (int i = 0; i < n; i++)
         {
-            newBoardArray[i] = blocks[i].clone();
+            for (int j = 0; j < n; j++)
+            {
+                if (blocks[i][j] == 0)
+                {
+                    zeroI = i;
+                    zeroJ = j;
+                }
+                else if (blocks[i][j] != i * n + (j + 1))
+                {
+                    hammingCount++;
+
+                    int x = blocks[i][j];
+                    int si = (x - 1) / n;
+                    int sj = abs(x - si * n - 1);
+                    manhattanCount += abs(i - si) + abs(j - sj);
+                }
+                newBoardArray[n * i + j] = (char) blocks[i][j];
+            }
         }
         this.board = newBoardArray;
+        this.hamming = hammingCount;
+        this.manhattan = manhattanCount;
+    }
+
+    private int abs(int a)
+    {
+        return (a < 0) ? -a : a;
     }
 
     public int dimension()                 // board dimension n
     {
-        return this.board.length;
+        return this.n;
     }
 
     public int hamming()                   // number of blocks out of place
     {
-        int count = 0;
-        int n = dimension();
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (board[i][j] != 0 && board[i][j] != i * n + (j + 1))
-                {
-                    count++;
-                }
-            }
-        }
-        return count;
+        return this.hamming;
     }
 
     public int manhattan()                 // sum of Manhattan distances between blocks and goal
     {
-        int res = 0;
-        int n = dimension();
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                if (board[i][j] != 0 && board[i][j] != i * n + (j + 1))
-                {
-                    int x = board[i][j];
-                    int si = (x - 1) / n;
-                    int sj = abs(x - si * n - 1);
-                    res += abs(i - si) + abs(j - sj);
-                }
-            }
-        }
-        return res;
+
+        return this.manhattan;
     }
 
     public boolean isGoal()                // is this board the goal board?
     {
-        return hamming() == 0;
+        return hamming == 0;
     }
 
     public Board twin()                    // a board that is obtained by exchanging any pair of blocks
     {
-        return null;
+        int[][] newBoardArray = new int[n][n];
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                newBoardArray[i][j] = (int) board[n * i + j];
+            }
+        }
+
+        if (newBoardArray[0][0] != 0 && newBoardArray[0][1] != 0)
+        {
+            int tmp = newBoardArray[0][0];
+            newBoardArray[0][0] = newBoardArray[0][1];
+            newBoardArray[0][1] = tmp;
+        }
+        else
+        {
+            int tmp = newBoardArray[n - 1][n - 1];
+            newBoardArray[n - 1][n - 1] = newBoardArray[n - 1][n - 2];
+            newBoardArray[n - 1][n - 2] = tmp;
+        }
+        return new Board(newBoardArray);
     }
 
-    public boolean equals(Object y)        // does this board equal y?
+    public boolean equals(Object obj)        // does this board equal y?
     {
-        if (!(y instanceof Board)) return false;
-        Board yBoard = (Board) y;
-        int n = dimension();
-        if (yBoard.dimension() != n) return false;
+        if (obj == null || this.getClass() != obj.getClass())
+        {
+            return false;
+        }
+
+        Board yBoard = (Board) obj;
+
+        if ((yBoard.board.length != this.board.length)
+                || (this.zeroI != yBoard.zeroI) || (this.zeroJ != yBoard.zeroJ))
+        {
+            return false;
+        }
 
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)
             {
-                if (board[i][j] != yBoard.board[i][j])
+                if (board[n * i + j] != yBoard.board[n * i + j])
                 {
                     return false;
                 }
@@ -97,56 +128,38 @@ public class Board
         if (neighborsList == null)
         {
             neighborsList = new ArrayList<>();
-            int n = dimension();
-            int iZero = -1;
-            int jZero = -1;
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    if (board[i][j] == 0)
-                    {
-                        iZero = i;
-                        jZero = j;
-                        break;
-                    }
-                }
-            }
-            if (iZero > 0) neighborsList.add(swap(iZero - 1, jZero, iZero, jZero));
-            if (iZero < n - 1) neighborsList.add(swap(iZero + 1, jZero, iZero, jZero));
-            if (jZero > 0) neighborsList.add(swap(iZero, jZero - 1, iZero, jZero));
-            if (jZero < n - 1) neighborsList.add(swap(iZero, jZero+1, iZero, jZero));
+            if (zeroI > 0) neighborsList.add(swap(zeroI - 1, zeroJ, zeroI, zeroJ));
+            if (zeroI < n - 1) neighborsList.add(swap(zeroI + 1, zeroJ, zeroI, zeroJ));
+            if (zeroJ > 0) neighborsList.add(swap(zeroI, zeroJ - 1, zeroI, zeroJ));
+            if (zeroJ < n - 1) neighborsList.add(swap(zeroI, zeroJ + 1, zeroI, zeroJ));
         }
         return neighborsList;
     }
 
     private Board swap(int newi, int newj, int oldi, int oldj)
     {
-        int n = dimension();
-        if (!(newi == oldi && newj == oldj) && newi >= 0 && newi < n && newj >= 0 && newj < n)
+        int[][] newBoardArray = new int[n][n];
+        for (int i = 0; i < n; i++)
         {
-            int[][] newBoardArray = new int[n][n];
-            for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
             {
-                newBoardArray[i] = this.board[i].clone();
+                newBoardArray[i][j] = (int) board[n * i + j];
             }
-            Board newBoard = new Board(newBoardArray);
-            newBoard.board[oldi][oldj] = newBoard.board[newi][newj];
-            newBoard.board[newi][newj] = 0;
-            return newBoard;
         }
-        return null;
+        newBoardArray[oldi][oldj] = newBoardArray[newi][newj];
+        newBoardArray[newi][newj] = 0;
+        return new Board(newBoardArray);
     }
 
     public String toString()               // string representation of this board (in the output format specified below)
     {
         StringBuilder sb = new StringBuilder();
-        int n = dimension();
+        sb.append(n).append("\n");
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)
             {
-                sb.append(board[i][j]).append(" ");
+                sb.append(String.format("%2d ", (int) board[n * i + j]));
             }
             sb.append("\n");
         }
@@ -155,32 +168,6 @@ public class Board
 
     public static void main(String[] args) // unit tests (not graded)
     {
-        int n = 2;
-        int[][] arr = new int[n][n];
-        int item = 9;
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                arr[i][j] = item--;
-            }
-        }
-        arr[0][0]=1;
-        arr[0][1]=0;
-        arr[1][0]=3;
-        arr[1][1]=2;
-//        arr[n - 1][n - 1] = 0;
-        Board b = new Board(arr);
-        System.out.println(b);
-        System.out.println(b.dimension());
-        System.out.println(b.hamming());
-        System.out.println(b.manhattan());
-        System.out.println(b.isGoal());
-        System.out.println(b.equals(new Board(arr)));
-
-        for (Board neighbor : b.neighbors())
-        {
-            System.out.println(neighbor);
-        }
+        System.out.println("Hi");
     }
 }
