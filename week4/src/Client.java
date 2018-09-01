@@ -12,7 +12,7 @@ public class Client
 
         // create initial board from file
 //        In in = new In(args[0]);
-        String fileName = "week4/test/notDone/puzzle4x4-45.txt";
+        String fileName = "/puzzle50.txt";
         In in = new In(fileName);
         int n = in.readInt();
         int[][] blocks = new int[n][n];
@@ -27,7 +27,6 @@ public class Client
 
         // solve the puzzle
         Date start = new Date();
-
         Solver solver = new Solver(initial);
 
         // print solution to standard output

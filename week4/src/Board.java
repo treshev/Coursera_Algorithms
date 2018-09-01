@@ -105,11 +105,10 @@ public class Board
         Board yBoard = (Board) obj;
 
         if ((yBoard.board.length != this.board.length)
-                || (this.zeroI != yBoard.zeroI) || (this.zeroJ != yBoard.zeroJ))
+                || (this.zeroI != yBoard.zeroI) || (this.zeroJ != yBoard.zeroJ) || this.manhattan != yBoard.manhattan)
         {
             return false;
         }
-
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)

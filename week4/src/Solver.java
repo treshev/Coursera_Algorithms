@@ -12,14 +12,16 @@ public class Solver
     {
         private final Board board;
         private final MyBoard predecessorItem;
-        private final int iter;
+        private final int iteration;
+        private final int manhattan;
 
 
-        public MyBoard(Board current, MyBoard predecessor, int iteration)
+        MyBoard(Board current, MyBoard predecessor, int iteration)
         {
             board = current;
             predecessorItem = predecessor;
-            iter = iteration;
+            this.iteration = iteration;
+            manhattan = current.manhattan();
         }
 
         @Override
@@ -27,12 +29,12 @@ public class Solver
         {
             if (this == object) return 0;
 
-            if (this.board.manhattan() + this.iter == object.board.manhattan() + object.iter)
+            if (this.manhattan + this.iteration == object.manhattan + object.iteration)
             {
-                return Integer.compare(this.board.manhattan(), object.board.manhattan());
+                return Integer.compare(this.manhattan, object.manhattan);
             }
-            return Integer.compare(this.board.manhattan() + this.iter,
-                    object.board.manhattan() + object.iter);
+            return Integer.compare(this.manhattan + this.iteration,
+                    object.manhattan + object.iteration);
         }
     }
 
@@ -42,6 +44,7 @@ public class Solver
             throw new IllegalArgumentException();
 
         MinPQ<MyBoard> pq = new MinPQ<>();
+
         MyBoard initialBoard = new MyBoard(initial, null, 0);
         pq.insert(initialBoard);
 
@@ -73,12 +76,12 @@ public class Solver
 
     private void setNeighbors(MinPQ<MyBoard> pq, MyBoard current)
     {
-        Iterable<Board> neig = current.board.neighbors();
-        for (Board board : neig)
+        Iterable<Board> neighbors = current.board.neighbors();
+        for (Board board : neighbors)
         {
             if (current.predecessorItem == null || !board.equals(current.predecessorItem.board))
             {
-                pq.insert(new MyBoard(board, current, current.iter + 1));
+                pq.insert(new MyBoard(board, current, current.iteration + 1));
             }
         }
     }
@@ -90,7 +93,7 @@ public class Solver
 
     public int moves()                     // min number of moves to solve initial board; -1 if unsolvable
     {
-        return finalNode.iter;
+        return finalNode.iteration;
     }
 
     public Iterable<Board> solution()      // sequence of boards in a shortest solution; null if unsolvable
