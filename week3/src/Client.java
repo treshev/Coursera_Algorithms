@@ -20,7 +20,7 @@ public class Client {
 
         int N = 1024*8;
         int greed = 4;
-        points = generateField(N, greed);
+//        points = generateField(N, greed);
 
         // draw the points
         StdDraw.enableDoubleBuffering();
@@ -45,7 +45,7 @@ public class Client {
         System.out.println("Time: " + (end.getTime()-start.getTime())/1000);
         System.out.println("Segments = "+collinear.numberOfSegments());
         for (LineSegment segment : collinear.segments()) {
-//            StdOut.println(segment);
+            StdOut.println(segment);
             segment.draw();
         }
 //

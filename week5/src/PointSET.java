@@ -14,7 +14,7 @@ public class PointSET
 
     public boolean isEmpty()                      // is the set empty?
     {
-        return pointSet.size() == 0;
+        return pointSet.isEmpty();
     }
 
     public int size()                         // number of points in the set
@@ -61,7 +61,7 @@ public class PointSET
     {
         if (p == null) throw new IllegalArgumentException();
         Point2D neighbor = p;
-        double minimumDistance = 100000;
+        double minimumDistance = 100;
 
         for (Point2D point2D : pointSet)
         {
@@ -77,6 +77,6 @@ public class PointSET
 
     public static void main(String[] args)                  // unit testing of the methods (optional)
     {
-        //test
+        System.out.println("Hi");
     }
 }
