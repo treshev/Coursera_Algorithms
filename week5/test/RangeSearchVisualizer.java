@@ -39,11 +39,11 @@ public class RangeSearchVisualizer {
         boolean isDragging = false;     // is the user dragging a rectangle
 
         // draw the points
-        StdDraw.clear();
         StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.setPenRadius(0.01);
-        brute.draw();
+        StdDraw.setPenRadius(0.005);
+//        brute.draw();
         StdDraw.show();
+        System.out.println("Points done");
 
         // process range search queries
         StdDraw.enableDoubleBuffering();
@@ -70,7 +70,7 @@ public class RangeSearchVisualizer {
             // draw the points
             StdDraw.clear();
             StdDraw.setPenColor(StdDraw.BLACK);
-            StdDraw.setPenRadius(0.01);
+            StdDraw.setPenRadius(0.005);
             brute.draw();
 
             // draw the rectangle
@@ -81,16 +81,18 @@ public class RangeSearchVisualizer {
             rect.draw();
 
             // draw the range search results for brute-force data structure in red
-            StdDraw.setPenRadius(0.03);
+            StdDraw.setPenRadius(0.05);
             StdDraw.setPenColor(StdDraw.RED);
             for (Point2D p : brute.range(rect))
+            {
                 p.draw();
+            }
 
             // draw the range search results for kd-tree in blue
-            StdDraw.setPenRadius(0.02);
-            StdDraw.setPenColor(StdDraw.BLUE);
-            for (Point2D p : kdtree.range(rect))
-                p.draw();
+//            StdDraw.setPenRadius(0.01);
+//            StdDraw.setPenColor(StdDraw.BLUE);
+//            for (Point2D p : kdtree.range(rect))
+//                p.draw();
 
             StdDraw.show();
             StdDraw.pause(20);
