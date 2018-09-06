@@ -1,8 +1,7 @@
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.StdDraw;
-
-import java.util.HashSet;
 
 public class KdTree
 {
@@ -161,13 +160,13 @@ public class KdTree
             throw new IllegalArgumentException();
         }
 
-        HashSet<Point2D> points = new HashSet<>();
+        SET<Point2D> points = new SET<>();
         findInRent(rect, points, root);
 
         return points;
     }
 
-    private void findInRent(RectHV rect, HashSet<Point2D> points, Node current)
+    private void findInRent(RectHV rect, SET<Point2D> points, Node current)
     {
         if (current == null) return;
 
@@ -217,7 +216,7 @@ public class KdTree
     {
         if (current == null) return;
 
-        if (point.distanceTo(current.p) < point.distanceTo(champion.p)) champion = current;
+        if (point.distanceSquaredTo(current.p) < point.distanceSquaredTo(champion.p)) champion = current;
 
         if (current.isVertical)
         {
@@ -225,7 +224,7 @@ public class KdTree
             {
                 findNearest(point, current.lb);
 
-                if (point.distanceTo(champion.p) > current.rect.distanceTo(point))
+                if (point.distanceSquaredTo(champion.p) > current.rect.distanceSquaredTo(point))
                 {
                     findNearest(point, current.rt);
                 }
@@ -234,7 +233,7 @@ public class KdTree
             {
                 findNearest(point, current.rt);
 
-                if (point.distanceTo(champion.p) > current.rect.distanceTo(point))
+                if (point.distanceSquaredTo(champion.p) > current.rect.distanceSquaredTo(point))
                 {
                     findNearest(point, current.lb);
                 }
@@ -246,7 +245,7 @@ public class KdTree
             {
                 findNearest(point, current.lb);
 
-                if (point.distanceTo(champion.p) > current.rect.distanceTo(point))
+                if (point.distanceSquaredTo(champion.p) > current.rect.distanceSquaredTo(point))
                 {
                     findNearest(point, current.rt);
                 }
@@ -255,7 +254,7 @@ public class KdTree
             {
                 findNearest(point, current.rt);
 
-                if (point.distanceTo(champion.p) > current.rect.distanceTo(point))
+                if (point.distanceSquaredTo(champion.p) > current.rect.distanceSquaredTo(point))
                 {
                     findNearest(point, current.lb);
                 }
@@ -277,13 +276,11 @@ public class KdTree
         if (node.isVertical)
         {
             StdDraw.setPenColor(StdDraw.RED);
-            StdDraw.setPenRadius(0.001);
             StdDraw.line(node.rect.xmin(), node.rect.ymin(), node.rect.xmax(), node.rect.ymax());
         }
         else
         {
             StdDraw.setPenColor(StdDraw.BLUE);
-            StdDraw.setPenRadius(0.001);
             StdDraw.line(node.rect.xmin(), node.rect.ymin(), node.rect.xmax(), node.rect.ymax());
         }
 
