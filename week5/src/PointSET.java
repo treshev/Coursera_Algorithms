@@ -59,7 +59,8 @@ public class PointSET
     public Point2D nearest(Point2D p)             // a nearest neighbor in the set to point p; null if the set is empty
     {
         if (p == null) throw new IllegalArgumentException();
-        Point2D neighbor = p;
+
+        Point2D neighbor = null;
         double minimumDistance = 10;
         double distance;
 

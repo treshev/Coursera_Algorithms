@@ -1,7 +1,8 @@
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
-import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.StdDraw;
+
+import java.util.ArrayList;
 
 public class KdTree
 {
@@ -16,6 +17,7 @@ public class KdTree
         Node lb;        // the left/bottom subtree
         Node rt;        // the right/top subtree
         boolean isVertical = false;
+        char index = 'A';
 
         Node(Point2D p)
         {
@@ -49,6 +51,9 @@ public class KdTree
         if (contains(p)) return;
 
         Node newNode = new Node(p);
+        int charValue = (int) newNode.index;
+        charValue += this.size;
+        newNode.index = (char) charValue;
         this.size++;
 
         if (root == null)
@@ -160,13 +165,13 @@ public class KdTree
             throw new IllegalArgumentException();
         }
 
-        SET<Point2D> points = new SET<>();
+        ArrayList<Point2D> points = new ArrayList<>();
         findInRent(rect, points, root);
 
         return points;
     }
 
-    private void findInRent(RectHV rect, SET<Point2D> points, Node current)
+    private void findInRent(RectHV rect, ArrayList<Point2D> points, Node current)
     {
         if (current == null) return;
 
@@ -209,22 +214,44 @@ public class KdTree
         }
         champion = root;
         findNearest(point, root);
-        return champion.p;
+
+        if (champion != null)
+        {
+            return champion.p;
+        }
+        return null;
     }
+
+    public Point2D nearest2(Point2D point)             // a nearest neighbor in the set to point p; null if the set is empty
+    {
+        if (point == null)
+        {
+            throw new IllegalArgumentException();
+        }
+        champion = root;
+        findNearest2(point, root);
+
+        if (champion != null)
+        {
+            return champion.p;
+        }
+        return null;
+    }
+
+    public ArrayList visitedNodes = new ArrayList();
 
     private void findNearest(Point2D point, Node current)
     {
         if (current == null) return;
-
-        if (point.distanceSquaredTo(current.p) < point.distanceSquaredTo(champion.p)) champion = current;
+        visitedNodes.add(current.index);
+        if (point.distanceTo(current.p) < point.distanceTo(champion.p)) champion = current;
 
         if (current.isVertical)
         {
             if (point.x() < current.p.x())
             {
                 findNearest(point, current.lb);
-
-                if (point.distanceSquaredTo(champion.p) > current.rect.distanceSquaredTo(point))
+                if (point.distanceTo(champion.p) > point.distanceTo(new Point2D(current.p.x(), point.y())))
                 {
                     findNearest(point, current.rt);
                 }
@@ -233,9 +260,60 @@ public class KdTree
             {
                 findNearest(point, current.rt);
 
-                if (point.distanceSquaredTo(champion.p) > current.rect.distanceSquaredTo(point))
+                if (point.distanceTo(champion.p) > point.distanceTo(new Point2D(current.p.x(), point.y())))
                 {
                     findNearest(point, current.lb);
+                }
+            }
+        }
+        else //horisont
+        {
+            if (point.y() < current.p.y())
+            {
+                findNearest(point, current.lb);
+
+                if (point.distanceTo(champion.p) > point.distanceTo(new Point2D(point.x(), current.p.y())))
+                {
+                    findNearest(point, current.rt);
+                }
+            }
+            else
+            {
+                findNearest(point, current.rt);
+
+                if (point.distanceTo(champion.p) > point.distanceTo(new Point2D(point.x(), current.p.y())))
+                {
+                    findNearest(point, current.lb);
+                }
+            }
+        }
+    }
+
+
+    private void findNearest2(Point2D point, Node current)
+    {
+        if (current == null) return;
+        visitedNodes.add(current.index);
+        if (point.distanceSquaredTo(current.p) < point.distanceSquaredTo(champion.p)) champion = current;
+
+        if (current.isVertical)
+        {
+            if (point.x() < current.p.x())
+            {
+                findNearest2(point, current.lb);
+
+                if (point.distanceSquaredTo(champion.p) > current.rect.distanceSquaredTo(point))
+                {
+                    findNearest2(point, current.rt);
+                }
+            }
+            else
+            {
+                findNearest2(point, current.rt);
+
+                if (point.distanceSquaredTo(champion.p) > current.rect.distanceSquaredTo(point))
+                {
+                    findNearest2(point, current.lb);
                 }
             }
         }
@@ -247,7 +325,7 @@ public class KdTree
 
                 if (point.distanceSquaredTo(champion.p) > current.rect.distanceSquaredTo(point))
                 {
-                    findNearest(point, current.rt);
+                    findNearest2(point, current.rt);
                 }
             }
             else
@@ -256,7 +334,7 @@ public class KdTree
 
                 if (point.distanceSquaredTo(champion.p) > current.rect.distanceSquaredTo(point))
                 {
-                    findNearest(point, current.lb);
+                    findNearest2(point, current.lb);
                 }
             }
         }
@@ -264,24 +342,29 @@ public class KdTree
 
     public void draw()                         // draw all points to standard draw
     {
-        drawNode(root);
+        if (!isEmpty())
+        {
+            drawNode(root);
+        }
     }
 
     private void drawNode(Node node)
     {
         StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.setPenRadius(0.01);
+        StdDraw.setPenRadius(0.02);
         StdDraw.point(node.p.x(), node.p.y());
-        StdDraw.text(node.p.x(), node.p.y(), ":" + String.valueOf(node.p.x()).substring(0, 3) + ", " + String.valueOf(node.p.y()).substring(0, 3));
+        StdDraw.text(node.p.x(), node.p.y(), node.index + ":" + String.valueOf(node.p.x()).substring(0, 3) + ", " + String.valueOf(node.p.y()).substring(0, 3));
         if (node.isVertical)
         {
             StdDraw.setPenColor(StdDraw.RED);
-//            StdDraw.line(node.rect.xmin(), node.rect.ymin(), node.rect.xmax(), node.rect.ymax());
+            StdDraw.setPenRadius(0.005);
+            StdDraw.line(node.rect.xmin(), node.rect.ymin(), node.rect.xmax(), node.rect.ymax());
         }
         else
         {
             StdDraw.setPenColor(StdDraw.BLUE);
-//            StdDraw.line(node.rect.xmin(), node.rect.ymin(), node.rect.xmax(), node.rect.ymax());
+            StdDraw.setPenRadius(0.005);
+            StdDraw.line(node.rect.xmin(), node.rect.ymin(), node.rect.xmax(), node.rect.ymax());
         }
 
         if (node.lb != null)
