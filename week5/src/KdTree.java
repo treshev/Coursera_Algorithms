@@ -182,7 +182,7 @@ public class KdTree
                 findInRent(rect, points, current.lb);
             }
 
-            if (rect.xmax() > current.p.x() || rect.xmin() > current.p.x())
+            if (rect.xmax() >= current.p.x() || rect.xmin() >= current.p.x())
             {
                 findInRent(rect, points, current.rt);
             }
@@ -194,7 +194,7 @@ public class KdTree
                 findInRent(rect, points, current.lb);
             }
 
-            if (rect.ymax() > current.p.y() || rect.ymin() > current.p.y())
+            if (rect.ymax() >= current.p.y() || rect.ymin() >= current.p.y())
             {
                 findInRent(rect, points, current.rt);
             }
@@ -276,12 +276,12 @@ public class KdTree
         if (node.isVertical)
         {
             StdDraw.setPenColor(StdDraw.RED);
-            StdDraw.line(node.rect.xmin(), node.rect.ymin(), node.rect.xmax(), node.rect.ymax());
+//            StdDraw.line(node.rect.xmin(), node.rect.ymin(), node.rect.xmax(), node.rect.ymax());
         }
         else
         {
             StdDraw.setPenColor(StdDraw.BLUE);
-            StdDraw.line(node.rect.xmin(), node.rect.ymin(), node.rect.xmax(), node.rect.ymax());
+//            StdDraw.line(node.rect.xmin(), node.rect.ymin(), node.rect.xmax(), node.rect.ymax());
         }
 
         if (node.lb != null)

@@ -1,12 +1,11 @@
 import edu.princeton.cs.algs4.Point2D;
-import edu.princeton.cs.algs4.RedBlackBST;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.SET;
 
 public class PointSET
 {
-    private final RedBlackBST<Integer, Point2D> pointBST = new RedBlackBST<>();
+    private final SET<Point2D> pointSET = new SET<>();
 
     public PointSET()                               // construct an empty set of points
     {
@@ -14,31 +13,30 @@ public class PointSET
 
     public boolean isEmpty()                      // is the set empty?
     {
-        return pointBST.isEmpty();
+        return pointSET.isEmpty();
     }
 
     public int size()                         // number of points in the set
     {
-        return pointBST.size();
+        return pointSET.size();
     }
 
     public void insert(Point2D p)              // add the point to the set (if it is not already in the set)
     {
         if (p == null) throw new IllegalArgumentException();
-        pointBST.put(p.hashCode(), p);
+        pointSET.add(p);
     }
 
     public boolean contains(Point2D p)            // does the set contain point p?
     {
         if (p == null) throw new IllegalArgumentException();
-        return pointBST.contains(p.hashCode());
+        return pointSET.contains(p);
     }
 
     public void draw()                         // draw all points to standard draw
     {
-        for (int key : pointBST.keys())
+        for (Point2D point : pointSET)
         {
-            Point2D point = pointBST.get(key);
             StdDraw.point(point.x(), point.y());
         }
     }
@@ -48,9 +46,8 @@ public class PointSET
         if (rect == null) throw new IllegalArgumentException();
 
         SET<Point2D> pointsInRectangle = new SET<>();
-        for (int key : pointBST.keys())
+        for (Point2D point2D : pointSET)
         {
-            Point2D point2D = pointBST.get(key);
             if (rect.contains(point2D))
             {
                 pointsInRectangle.add(point2D);
@@ -66,9 +63,8 @@ public class PointSET
         double minimumDistance = 10;
         double distance;
 
-        for (int key : pointBST.keys())
+        for (Point2D point2D : pointSET)
         {
-            Point2D point2D = pointBST.get(key);
             distance = p.distanceSquaredTo(point2D);
             if (distance < minimumDistance)
             {
